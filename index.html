@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Medalion Project</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Spectral:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div id="juego">
+    <!-- Canvas: fondo y medalla (lo visual del juego) -->
+    <canvas id="lienzo" width="960" height="540"></canvas>
+
+    <!-- UI en HTML/CSS encima del canvas -->
+    <div id="ui">
+      <div id="barra-superior">
+        <!-- Silencio: altavoz (con ondas) / altavoz tachado -->
+        <button id="btn-silencio" class="icono" aria-pressed="false" aria-label="Silenciar" title="Silenciar">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M11 5 6 9H2v6h4l5 4V5z"/>
+            <path class="onda" d="M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13"/>
+            <path class="tacha" d="M16 9l6 6M22 9l-6 6"/>
+          </svg>
+        </button>
+        <!-- Pantalla completa: esquinas hacia fuera / hacia dentro -->
+        <button id="btn-pantalla" class="icono" aria-pressed="false" aria-label="Pantalla completa" title="Pantalla completa">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path class="expandir" d="M8 3H3v5M16 3h5v5M8 21H3v-5M16 21h5v-5"/>
+            <path class="comprimir" d="M3 8h5V3M21 8h-5V3M3 16h5v5M21 16h-5v5"/>
+          </svg>
+        </button>
+      </div>
+
+      <div id="info-personaje"></div>
+
+      <section id="pantalla-menu">
+        <h1>Medalion Project</h1>
+        <div id="lista-capitulos"></div>
+        <button id="btn-ajustes" class="boton">Ajustes</button>
+      </section>
+
+      <section id="pantalla-ajustes" hidden>
+        <h2>Ajustes de sonido</h2>
+        <div id="lista-sliders"></div>
+        <button id="btn-volver" class="boton">Volver</button>
+      </section>
+
+      <section id="pantalla-combate" hidden>
+        <div id="orden-turnos" aria-label="Orden de turnos"></div>
+
+        <div id="hud-enemigo" class="hud">
+          <div id="e-nombre" class="nombre-hud"></div>
+          <div id="e-vida" class="vida-texto"></div>
+          <div class="barra"><div id="e-barra" class="relleno"></div></div>
+        </div>
+
+        <p id="mensaje-combate" role="status"></p>
+
+        <div id="hud-jugador" class="hud">
+          <div id="j-retrato" aria-hidden="true"></div> <!-- placeholder: aquí irá la imagen del personaje -->
+          <div class="datos">
+            <div id="j-nombre" class="nombre-hud"></div>
+            <div id="j-vida" class="vida-texto"></div>
+            <div class="barra"><div id="j-barra" class="relleno"></div></div>
+          </div>
+        </div>
+
+        <div id="acciones">
+          <button class="boton" data-accion="atacar">Atacar</button>
+          <button class="boton" data-accion="defender">Defender</button>
+          <button class="boton" data-accion="huir">Huir</button>
+        </div>
+
+        <div id="resultado" hidden>
+          <h2 id="resultado-titulo"></h2>
+          <div class="fila">
+            <button id="btn-reintentar" class="boton">Reintentar</button>
+            <button id="btn-salir" class="boton">Volver al menú</button>
+          </div>
+        </div>
+      </section>
+
+      <p id="aviso" role="status"></p>
+    </div>
+  </div>
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>
