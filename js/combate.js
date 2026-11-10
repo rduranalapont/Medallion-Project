@@ -1,30 +1,29 @@
-// Pelea 1 contra 1 por turnos. La lógica vive en estado.batalla; aquí se actualiza y se refleja en el HTML.
+// Pelea 1 contra 1 por turnos. Las reglas están en reglas.js; aquí se enlazan con el HTML.
 import { estado, personajeActual } from "./estado.js";
 import { ENEMIGOS } from "./data/enemigos.js";
+import { TIPOS, ACCIONES } from "./data/tipos.js";
+import { crearBatalla, ejecutarAccion, accionSecundaria } from "./reglas.js";
 import { sonidoClick } from "./audio.js";
 import { mostrarPantalla } from "./pantallas.js";
 
 const $ = (id) => document.getElementById(id);
-const PAUSA_ENEMIGO = 1000;   // ms antes de que el enemigo actúe
+const PAUSA_ENEMIGO = 1000;   // ms entre cada acción del enemigo
 let capitulo = null, espera = null;
 
 export function iniciarCombate(cap) {
   const p = personajeActual(), e = ENEMIGOS[cap.enemigo];
   capitulo = cap;
-  estado.batalla = {
-    jugador: { nombre: p.nombre, color: p.color, vida: p.vida, vidaMax: p.vida, danio: p.danio, guardia: false },
-    enemigo: { nombre: e.nombre, color: e.color, vida: e.vidaMax, vidaMax: e.vidaMax, danio: e.danio, tamano: e.tamano ?? 1 },
-    turno: "jugador",       // "jugador" | "enemigo" | "fin"
-  };
+  estado.batalla = crearBatalla(p, e);
   $("resultado").hidden = true;
   mostrarPantalla("combate");
-  $("j-retrato").textContent = p.nombre[0];
-  $("j-retrato").style.background = p.color;
+  const retrato = $("j-retrato");                       // con imagen: la cara; sin imagen: inicial sobre el color
+  retrato.textContent = p.retrato ? "" : p.nombre[0];
+  retrato.style.background = p.retrato ? `url("${p.retrato}") center / cover` : p.color;
   mensaje(e.intro ?? `¡${e.nombre} aparece!`);
   refrescar();
 }
 
-function mensaje(t) { $("mensaje-combate").textContent = t; }
+function mensaje(t) { if (t) $("mensaje-combate").textContent = t; }
 
 function pintarVida(prefijo, u) {
   const r = u.vida / u.vidaMax;
@@ -36,12 +35,22 @@ function pintarVida(prefijo, u) {
 
 function refrescar() {
   const b = estado.batalla;
-  $("j-nombre").textContent = b.jugador.nombre; $("e-nombre").textContent = b.enemigo.nombre;
+  $("j-nombre").textContent = `${b.jugador.nombre} · ${TIPOS[b.jugador.tipo].nombre}`;
+  $("e-nombre").textContent = `${b.enemigo.nombre} · ${TIPOS[b.enemigo.tipo].nombre}`;
   pintarVida("j", b.jugador); pintarVida("e", b.enemigo);
-  // Orden de turnos (arriba): el que tiene el turno se resalta
-  $("orden-turnos").innerHTML = ["jugador", "enemigo"]
-    .map((k) => `<span class="turno${b.turno === k ? " activo" : ""}">${b[k].nombre}</span>`).join("");
-  for (const btn of document.querySelectorAll("#acciones button")) btn.disabled = b.turno !== "jugador";
+  // Orden de turnos: el que tiene el turno se resalta y muestra cuántas acciones le quedan (×2)
+  $("orden-turnos").innerHTML = ["jugador", "enemigo"].map((k) => {
+    const activo = b.turno === k;
+    return `<span class="turno${activo ? " activo" : ""}">${b[k].nombre}${activo && b.restantes > 1 ? ` ×${b.restantes}` : ""}</span>`;
+  }).join("");
+  // El segundo botón cambia según el tipo (Defender / Rush / Negar)
+  const secundaria = accionSecundaria(b.jugador);
+  for (const btn of document.querySelectorAll("#acciones button")) {
+    if (btn.id === "btn-secundaria") btn.dataset.accion = secundaria;
+    const a = ACCIONES[btn.dataset.accion];
+    btn.textContent = a.nombre; btn.title = a.info;
+    btn.disabled = b.turno !== "jugador";
+  }
 }
 
 function actuar(accion) {
@@ -49,31 +58,26 @@ function actuar(accion) {
   if (!b || b.turno !== "jugador") return;
   sonidoClick();
   if (accion === "huir") return salir();
-  if (accion === "atacar") {
-    b.enemigo.vida = Math.max(0, b.enemigo.vida - b.jugador.danio);
-    mensaje(`${b.jugador.nombre} ataca e inflige ${b.jugador.danio} de daño`);
-  } else if (accion === "defender") {
-    b.jugador.guardia = true;
-    mensaje(`${b.jugador.nombre} se pone en guardia`);
-  }
-  if (b.enemigo.vida <= 0) return terminar(true);
-  b.turno = "enemigo"; refrescar();
-  espera = setTimeout(turnoEnemigo, PAUSA_ENEMIGO);
+  mensaje(ejecutarAccion(b, "jugador", accion));
+  siguiente();
 }
 
 function turnoEnemigo() {
   const b = estado.batalla;
   if (!b || b.turno !== "enemigo") return;
-  const danio = b.jugador.guardia ? Math.ceil(b.enemigo.danio / 2) : b.enemigo.danio;
-  mensaje(`${b.enemigo.nombre} ataca e inflige ${danio} de daño${b.jugador.guardia ? " (guardia)" : ""}`);
-  b.jugador.guardia = false;
-  b.jugador.vida = Math.max(0, b.jugador.vida - danio);
-  if (b.jugador.vida <= 0) return terminar(false);
-  b.turno = "jugador"; refrescar();
+  mensaje(ejecutarAccion(b, "enemigo", "atacar"));   // por ahora el enemigo solo ataca
+  siguiente();
+}
+
+// Tras cada acción: refresca y decide si sigue tu turno, toca al enemigo o termina la pelea
+function siguiente() {
+  const b = estado.batalla;
+  refrescar();
+  if (b.turno === "fin") return terminar(b.ganador === "jugador");
+  if (b.turno === "enemigo") espera = setTimeout(turnoEnemigo, PAUSA_ENEMIGO);
 }
 
 function terminar(victoria) {
-  estado.batalla.turno = "fin"; refrescar();
   $("resultado-titulo").textContent = victoria ? "Victoria" : "Derrota";
   $("resultado-titulo").className = victoria ? "victoria" : "derrota";
   $("btn-reintentar").hidden = victoria;     // solo se puede reintentar tras perder

@@ -2,7 +2,7 @@
 import { PERSONAJES } from "./data/personajes.js";
 
 export const estado = {
-  ID_personaje: "fuego_01",   // <- AQUÍ se guardará el id leído por el NFC (null = sin medalla)
+  ID_personaje: "mayu_01",   // <- AQUÍ se guardará el id leído por el NFC (null = sin medalla)
   escena: "menu",           // "menu" | "combate" (lo usa render.js para saber qué dibujar)
   batalla: null,            // datos de la pelea en curso (lo rellena combate.js)
   ajustes: { general: 70, musica: 50, efectos: 80, silenciado: false },

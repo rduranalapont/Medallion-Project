@@ -30,9 +30,14 @@ h2 { font-size: 2.8cqw; margin-bottom: 1cqw; }
 
 /* Izquierda: título arriba, medalla grande en el canvas, datos debajo */
 h1 { position: absolute; top: 5%; left: 5%; width: 44%; font-size: 3.6cqw; }
-#info-personaje { position: absolute; left: 5%; width: 44%; bottom: 7%; text-align: center; }
-#info-personaje .nombre { font-family: var(--fuente-titulo); font-size: 3.2cqw; font-weight: 700; }
-#info-personaje .detalle { font-size: 1.9cqw; font-style: italic; opacity: .85; }
+/* Placa del personaje: fondo oscuro sobre el splash art para que el texto se lea siempre */
+#info-personaje {
+  position: absolute; left: 11.5%; width: 30%; bottom: 5%; padding: .9cqw 1.5cqw; text-align: center;
+  background: rgba(13,16,36,.82); border: 1px solid rgba(217,180,90,.7); border-bottom: .35cqw solid var(--oro);
+  box-shadow: 0 .6cqw 1.8cqw rgba(0,0,0,.55);
+}
+#info-personaje .nombre { font-family: var(--fuente-titulo); font-size: 3.4cqw; font-weight: 700; line-height: 1.15; color: var(--pergamino); }
+#info-personaje .detalle { font-size: 2cqw; font-weight: 600; letter-spacing: .04em; color: var(--oro); }
 
 /* Barra superior derecha: silencio + pantalla completa */
 #barra-superior { position: absolute; right: 5%; top: 3%; z-index: 10; display: flex; gap: 1.6cqw; } /* z-index: siempre por encima de cualquier pantalla */
@@ -115,10 +120,10 @@ h1 { position: absolute; top: 5%; left: 5%; width: 44%; font-size: 3.6cqw; }
 .barra { height: 1.2cqw; background: #05060f; border: 1px solid rgba(239,227,194,.4); }
 .relleno { height: 100%; width: 100%; transition: width .4s, background .4s; }
 
-#mensaje-combate { position: absolute; left: 5%; right: 42%; top: 62%; margin: 0; text-align: center; font-style: italic; font-size: 1.9cqw; }
+#mensaje-combate { position: absolute; left: 5%; right: 42%; top: 69%; margin: 0; text-align: center; font-style: italic; font-size: 1.9cqw; }
 
-#acciones { position: absolute; right: 5%; bottom: 6%; width: 34%; display: flex; flex-direction: column; gap: 1cqw; }
-#acciones .boton { padding: 1.1cqw 2cqw; font-size: 2.1cqw; text-align: left; }
+#acciones { position: absolute; right: 5%; bottom: 6%; width: 34%; display: flex; flex-direction: column; gap: .8cqw; }
+#acciones .boton { padding: .8cqw 2cqw; font-size: 1.9cqw; text-align: left; }
 .boton:disabled { opacity: .4; cursor: default; }
 .boton:disabled:hover { background: rgba(13,16,36,.85); }
 

@@ -4,6 +4,7 @@ import { estado, personajeActual, guardarAjustes } from "./estado.js";
 import { aplicarVolumenes, sonidoClick, iniciarMusica } from "./audio.js";
 import { mostrarPantalla } from "./pantallas.js";
 import { iniciarCombate } from "./combate.js";
+import { TIPOS } from "./data/tipos.js";
 
 const $ = (id) => document.getElementById(id);
 let temporizadorAviso;
@@ -17,7 +18,7 @@ function aviso(texto) {
 function mostrarPersonaje() {
   const p = personajeActual();
   $("info-personaje").innerHTML = p
-    ? `<div class="nombre">${p.nombre}</div><div class="detalle">Tipo ${p.tipo} · Nivel ${p.nivel}</div>`
+    ? `<div class="nombre">${p.nombre}</div><div class="detalle">${TIPOS[p.tipo].nombre} · Nivel ${p.nivel}</div>`
     : `<div class="nombre">Sin medalla</div><div class="detalle">Coloca una medalla en el lector</div>`;
   // Sin medalla, los capítulos se ven apagados (no se pueden empezar)
   for (const b of document.querySelectorAll(".capitulo")) b.classList.toggle("bloqueado", !p);
