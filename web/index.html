@@ -18,6 +18,7 @@
         </a>
         <div class="nav-links">
             <a href="#historia">Historia</a>
+            <a href="#sinopsis">Sinopsis</a>
             <a href="#juego">Cómo se juega</a>
             <a href="#base">La base</a>
             <a href="#personajes">Personajes</a>
@@ -39,10 +40,31 @@
             </div>
         </div>
 
-        <div class="medallion" role="img" aria-label="Tenshi saliendo de una medalla dorada">
-            <div class="disc"></div>
-            <div class="figure">
-                <img src="tenshi.webp" alt="" width="758" height="1400">
+        <div class="hero-visual" id="hero-chars" role="group" aria-roledescription="carrusel" aria-label="Personajes de Medallion Project">
+            <div class="medallion">
+                <div class="disc"></div>
+                <div class="figure is-active" data-name="Tenshi" role="group" aria-roledescription="diapositiva" aria-label="1 de 2: Tenshi">
+                    <img src="tenshi.webp" alt="Tenshi saliendo de una medalla dorada" width="758" height="1400">
+                </div>
+                <div class="figure" data-name="Mayu" role="group" aria-roledescription="diapositiva" aria-label="2 de 2: Mayu" aria-hidden="true" style="--dx: 0%">
+                    <img src="mayu.webp" alt="Mayu saliendo de una medalla dorada" width="700" height="1400">
+                </div>
+            </div>
+
+            <div class="hero-controls">
+                <button class="hero-btn hero-prev" type="button" aria-label="Personaje anterior">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>
+                </button>
+                <div class="hero-meta">
+                    <p class="hero-name" id="hero-name" aria-live="polite">Tenshi</p>
+                    <div class="hero-dots" id="hero-dots">
+                        <button type="button" aria-label="Ver a Tenshi"></button>
+                        <button type="button" aria-label="Ver a Mayu"></button>
+                    </div>
+                </div>
+                <button class="hero-btn hero-next" type="button" aria-label="Personaje siguiente">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>
+                </button>
             </div>
         </div>
     </header>
@@ -56,6 +78,20 @@
                     <p>Tras él, la tierra empezó a emanar partículas mágicas, y solo unos elegidos supieron aprovechar su potencial.</p>
                     <p>Pero no todo eran buenas noticias: esas mismas partículas dieron vida a criaturas salvajes y destructivas.</p>
                     <p class="question">¿Quieres saber qué ocurre en estas tierras baldías?</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="sinopsis" class="section synopsis">
+            <div class="wrap split">
+                <div class="split-head">
+                    <h2>Sinopsis</h2>
+                </div>
+                <!-- SINOPSIS: sustituye los textos de abajo. Cada <p> es un párrafo; puedes añadir o quitar los que quieras. -->
+                <div class="synopsis-text">
+                    <p class="synopsis-lead">Escribe aquí la frase que resume la historia de Medallion Project.</p>
+                    <p>Escribe aquí el primer párrafo de la sinopsis: el planteamiento, el mundo y quién es el protagonista.</p>
+                    <p>Escribe aquí el segundo párrafo: el conflicto principal y lo que está en juego.</p>
                 </div>
             </div>
         </section>
@@ -133,25 +169,35 @@
             <div class="wrap split">
                 <div class="split-head">
                     <h2>Personajes</h2>
-                    <h3 class="char-name">Tenshi</h3>
-                    <p class="role">Novata del gremio de exploración</p>
-                    <p>Se unió hace poco al gremio de exploración. Acompáñala y usa sus habilidades de energía para retrasar los turnos de los oponentes y tomar el control de la batalla.</p>
+                    <div class="char-panel" id="char-tenshi" role="tabpanel" aria-labelledby="tab-tenshi">
+                        <h3 class="char-name">Tenshi</h3>
+                        <p class="role">Novata del gremio de exploración</p>
+                        <p class="char-desc">Se unió hace poco al gremio de exploración. Acompáñala y usa sus habilidades de energía para retrasar los turnos de los oponentes y tomar el control de la batalla.</p>
+                    </div>
+                    <!-- TEXTO PROVISIONAL de Mayu: sustituye el rol y la descripción por los definitivos. -->
+                    <div class="char-panel" id="char-mayu" role="tabpanel" aria-labelledby="tab-mayu" hidden>
+                        <h3 class="char-name">Mayu</h3>
+                        <p class="role">Rol por definir</p>
+                        <p class="char-desc">Ágil y de mirada tranquila, lanza sus kunais antes de que el enemigo termine de moverse. Escribe aquí su descripción definitiva.</p>
+                    </div>
                 </div>
-                <div class="medals">
-                    <figure class="medal">
-                        <div class="medal-disc medal-tenshi">
-                            <img src="tenshi.webp" alt="Tenshi, exploradora de pelo largo y blanco, con kimono corto blanco y rosa decorado con flores de cerezo" width="758" height="1400">
-                        </div>
-                        <figcaption>Tenshi</figcaption>
-                    </figure>
-                    <figure class="medal">
-                        <div class="medal-disc medal-locked" aria-hidden="true"><span>?</span></div>
-                        <figcaption>Por descubrir</figcaption>
-                    </figure>
-                    <figure class="medal">
-                        <div class="medal-disc medal-locked" aria-hidden="true"><span>?</span></div>
-                        <figcaption>Por descubrir</figcaption>
-                    </figure>
+                <div class="medals" id="char-tabs" role="tablist" aria-label="Elige un personaje">
+                    <button class="medal" type="button" role="tab" id="tab-tenshi" aria-controls="char-tenshi" aria-selected="true">
+                        <span class="medal-disc medal-char medal-tenshi">
+                            <img src="tenshi.webp" alt="" width="758" height="1400">
+                        </span>
+                        <span class="medal-label">Tenshi</span>
+                    </button>
+                    <button class="medal" type="button" role="tab" id="tab-mayu" aria-controls="char-mayu" aria-selected="false" tabindex="-1">
+                        <span class="medal-disc medal-char medal-mayu">
+                            <img src="mayu.webp" alt="" width="700" height="1400">
+                        </span>
+                        <span class="medal-label">Mayu</span>
+                    </button>
+                    <div class="medal" aria-hidden="true">
+                        <div class="medal-disc medal-locked"><span>?</span></div>
+                        <span class="medal-label">Por descubrir</span>
+                    </div>
                 </div>
             </div>
         </section>
@@ -256,6 +302,73 @@
             document.getElementById('signup-msg').textContent = '¡Listo! Te avisaremos cuando salga.';
             this.reset();
         });
+
+
+        // Carrusel de personajes de la cabecera
+        (function () {
+            var root = document.getElementById('hero-chars');
+            var figs = root.querySelectorAll('.figure');
+            var dots = root.querySelectorAll('#hero-dots button');
+            var name = document.getElementById('hero-name');
+            var total = figs.length;
+            var cur = 0;
+
+            function show(i) {
+                cur = (i + total) % total;
+                figs.forEach(function (f, n) {
+                    var on = n === cur;
+                    f.classList.toggle('is-active', on);
+                    if (on) f.removeAttribute('aria-hidden'); else f.setAttribute('aria-hidden', 'true');
+                });
+                dots.forEach(function (d, n) {
+                    if (n === cur) d.setAttribute('aria-current', 'true'); else d.removeAttribute('aria-current');
+                });
+                name.textContent = figs[cur].getAttribute('data-name');
+            }
+
+            root.querySelector('.hero-prev').addEventListener('click', function () { show(cur - 1); });
+            root.querySelector('.hero-next').addEventListener('click', function () { show(cur + 1); });
+            dots.forEach(function (d, n) { d.addEventListener('click', function () { show(n); }); });
+
+            // Deslizar con el dedo en pantallas táctiles
+            var startX = null;
+            var stage = root.querySelector('.medallion');
+            stage.addEventListener('touchstart', function (e) { startX = e.touches[0].clientX; }, { passive: true });
+            stage.addEventListener('touchend', function (e) {
+                if (startX === null) return;
+                var dx = e.changedTouches[0].clientX - startX;
+                startX = null;
+                if (Math.abs(dx) > 40) show(dx < 0 ? cur + 1 : cur - 1);
+            });
+            show(0);
+        })();
+
+        // Selector de personajes de la sección Personajes
+        (function () {
+            var tabs = Array.prototype.slice.call(document.querySelectorAll('#char-tabs [role="tab"]'));
+
+            function select(tab, focus) {
+                tabs.forEach(function (t) {
+                    var on = t === tab;
+                    t.setAttribute('aria-selected', on ? 'true' : 'false');
+                    t.tabIndex = on ? 0 : -1;
+                    document.getElementById(t.getAttribute('aria-controls')).hidden = !on;
+                });
+                if (focus) tab.focus();
+            }
+
+            tabs.forEach(function (t, i) {
+                t.addEventListener('click', function () { select(t, false); });
+                t.addEventListener('keydown', function (e) {
+                    var n = null;
+                    if (e.key === 'ArrowRight') n = (i + 1) % tabs.length;
+                    else if (e.key === 'ArrowLeft') n = (i - 1 + tabs.length) % tabs.length;
+                    else if (e.key === 'Home') n = 0;
+                    else if (e.key === 'End') n = tabs.length - 1;
+                    if (n !== null) { e.preventDefault(); select(tabs[n], true); }
+                });
+            });
+        })();
 
         // Carrusel de la prueba de concepto
         (function () {
