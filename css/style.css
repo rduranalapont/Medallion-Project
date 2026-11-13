@@ -25,8 +25,9 @@ h1, h2 { font-family: var(--fuente-titulo); margin: 0; color: var(--oro); letter
 h2 { font-size: 2.8cqw; margin-bottom: 1cqw; }
 
 /* ---------- Layout: izquierda = personaje, derecha = menú ---------- */
-#pantalla-menu { position: absolute; inset: 0; pointer-events: none; }
-#pantalla-menu button { pointer-events: auto; } /* la capa no bloquea clics; solo sus botones los reciben */
+/* Todas las pantallas ocupan el área completa; la capa no bloquea clics, solo sus botones los reciben */
+.pantalla { position: absolute; inset: 0; pointer-events: none; }
+.pantalla button, .pantalla input, .pantalla label { pointer-events: auto; }
 
 /* Izquierda: título arriba, medalla grande en el canvas, datos debajo */
 h1 { position: absolute; top: 5%; left: 5%; width: 44%; font-size: 3.6cqw; }
@@ -81,14 +82,19 @@ h1 { position: absolute; top: 5%; left: 5%; width: 44%; font-size: 3.6cqw; }
   background: rgba(13,16,36,.85); border: 1px solid var(--pergamino); transition: background .12s;
 }
 .boton:hover, .boton:focus-visible { background: var(--brasa); outline: none; }
-#btn-ajustes { position: absolute; right: 5%; bottom: 5%; width: 44%; padding: 1cqw; }
+#fila-inferior { position: absolute; right: 5%; bottom: 5%; width: 44%; display: flex; gap: 1.6cqw; }
+#fila-inferior .boton { flex: 1; padding: 1cqw; }
 
 /* ---------- Ajustes (ocupa la zona derecha) ---------- */
 #pantalla-ajustes {
-  position: absolute; right: 5%; top: 14%; width: 44%; padding: 3cqw;
-  display: flex; flex-direction: column; gap: 1.8cqw;
+  position: absolute; right: 5%; top: 14%; width: 44%; padding: 2.4cqw 3cqw;
+  display: flex; flex-direction: column; gap: 1.2cqw; pointer-events: auto;
   background: rgba(13,16,36,.92); border: 1px solid var(--oro);
 }
+#pantalla-ajustes h3 { margin: 1cqw 0 0; font: 700 2cqw var(--fuente-titulo); color: var(--oro); letter-spacing: .05em; }
+#pantalla-ajustes .nota { margin: 0; font-size: 1.5cqw; font-style: italic; opacity: .8; }
+.fila-botones { display: flex; gap: 1cqw; }
+.fila-botones .boton { flex: 1; padding: .8cqw .6cqw; font-size: 1.6cqw; text-align: center; }
 #pantalla-ajustes .boton { align-self: center; margin-top: 1cqw; }
 .ajuste { display: grid; grid-template-columns: 9cqw 1fr 4cqw; align-items: center; gap: 1cqw; }
 .ajuste input { accent-color: var(--oro); width: 100%; }
@@ -133,3 +139,93 @@ h1 { position: absolute; top: 5%; left: 5%; width: 44%; font-size: 3.6cqw; }
 #resultado h2.derrota { color: var(--brasa); }
 #resultado .fila { display: flex; gap: 2cqw; }
 #resultado .boton { font-size: 2cqw; padding: 1cqw 2.6cqw; }
+
+/* ---------- Escenas de diálogo ---------- */
+#pantalla-escena { position: absolute; inset: 0; pointer-events: none; }
+#pantalla-escena button, #esc-caja { pointer-events: auto; }
+
+#esc-marco { position: absolute; left: 5%; right: 5%; bottom: 5%; }
+
+/* Caja de texto: gris oscuro semitransparente con patrón de rombos, borde dorado pálido y sombra */
+#esc-caja {
+  position: relative; overflow: hidden; min-height: 14.5cqw; cursor: pointer;
+  background: rgba(54,54,57,.92); border: 1px solid rgba(217,200,130,.75); border-bottom: .3cqw solid #cdbf86; border-radius: .5cqw;
+  box-shadow: .7cqw .7cqw 1.4cqw rgba(0,0,0,.55);
+}
+#esc-caja::before {                                              /* el patrón: cuadros girados 45º = rombos */
+  content: ""; position: absolute; left: 50%; top: 50%; width: 140cqw; height: 140cqw; margin: -70cqw 0 0 -70cqw;
+  transform: rotate(45deg); pointer-events: none;
+  background: repeating-conic-gradient(rgba(255,255,255,.065) 0 25%, transparent 0 50%) 0 0 / 6cqw 6cqw;
+}
+#esc-texto { position: relative; margin: 0; padding: 2.4cqw 3cqw; font-size: 2.4cqw; line-height: 1.5; color: #f4f1e8; }
+
+/* Etiqueta amarilla con el nombre, encima de la caja y del lado de quien habla */
+#esc-etiqueta {
+  position: absolute; bottom: 100%; padding: .55cqw 3.2cqw .45cqw; margin-bottom: -1px;
+  background: #f6f66e; color: #15151a; border: 1px solid #c9c94a; border-bottom: 0;
+  font: 700 1.5cqw/1.2 "Trebuchet MS", "Segoe UI", Arial, sans-serif; letter-spacing: .3em; text-transform: uppercase;
+}
+#esc-marco[data-lado="derecha"] #esc-etiqueta { right: 3%; }
+#esc-marco[data-lado="izquierda"] #esc-etiqueta { left: 3%; }
+
+/* Flechas anterior / siguiente */
+.flecha {
+  position: absolute; top: 40%; width: 4cqw; height: 4cqw; padding: 0 0 .3cqw; display: grid; place-items: center;
+  font: 400 3cqw/1 var(--fuente-texto); color: var(--pergamino); cursor: pointer;
+  background: rgba(20,24,40,.85); border: .2cqw solid var(--oro); border-radius: 50%; transition: background .12s;
+}
+#esc-prev { left: 1.5%; } #esc-sig { right: 1.5%; }
+.flecha:hover, .flecha:focus-visible { background: rgba(60,50,30,.95); outline: none; }
+.flecha:disabled { opacity: .35; cursor: default; }
+
+/* ---------- Pantalla de título y menú principal ---------- */
+#pantalla-inicio { pointer-events: auto; cursor: pointer; }
+.titulo-grande { position: absolute; top: 20%; left: 50%; right: 5%; width: auto; text-align: center; font-size: 7.2cqw; line-height: 1.05; letter-spacing: .08em; text-shadow: 0 .4cqw 2cqw rgba(0,0,0,.6); }
+.subtitulo-inicio { position: absolute; top: 56%; left: 50%; right: 5%; margin: 0; text-align: center; font: italic 2cqw var(--fuente-texto); letter-spacing: .5em; opacity: .75; }
+.pulsa { position: absolute; left: 50%; right: 5%; bottom: 12%; margin: 0; text-align: center; font-size: 1.9cqw; letter-spacing: .06em; animation: parpadeo 1.8s ease-in-out infinite; }
+@keyframes parpadeo { 50% { opacity: .25; } }
+
+#lista-opciones { position: absolute; right: 5%; top: 20%; width: 44%; display: grid; gap: 2cqw; }
+.opcion {
+  display: grid; text-align: left; font: inherit; color: inherit; cursor: pointer; padding: 1.8cqw 2.4cqw;
+  background: linear-gradient(90deg, rgba(26,31,61,.6) 0%, rgba(13,16,36,.92) 100%);
+  border: 1px solid rgba(217,180,90,.55); border-left: .7cqw solid var(--brasa); transition: transform .15s, border-color .15s;
+}
+.opcion:nth-child(2) { border-left-color: #3a9bd9; } .opcion:nth-child(3) { border-left-color: #8a5cd0; }
+.opcion .titulo { font-family: var(--fuente-titulo); font-weight: 700; font-size: 3cqw; }
+.opcion .sub { font-style: italic; font-size: 1.7cqw; opacity: .75; }
+.opcion:hover, .opcion:focus-visible { transform: translateX(-1.2cqw); border-color: var(--oro); outline: none; }
+.opcion.proximamente { opacity: .55; }
+
+/* Marca de capítulo completado */
+.capitulo .marca { display: none; position: absolute; top: 1cqw; right: 1.6cqw; font-size: 1.4cqw; font-weight: 600; letter-spacing: .05em; color: #8fd88f; }
+.capitulo.completado .marca { display: block; }
+.capitulo { position: relative; }
+
+/* Botón de elección dentro de una escena (p. ej. "Introducir NFC vacío") */
+#esc-boton { position: absolute; right: 2.5cqw; bottom: 1.6cqw; padding: .9cqw 2.4cqw; font-size: 2cqw; font-weight: 600; background: rgba(217,180,90,.92); color: #15151a; border-color: #f3e2a2; pointer-events: auto; animation: latido 1.6s ease-in-out infinite; }
+#esc-boton:hover, #esc-boton:focus-visible { background: #f6e7ab; }
+@keyframes latido { 50% { box-shadow: 0 0 1.6cqw rgba(246,231,171,.8); } }
+
+/* ---------- Transiciones y animaciones de entrada/salida ---------- */
+#velo { position: absolute; inset: 0; z-index: 9; background: #05060f; opacity: 0; pointer-events: none; transition: opacity .35s ease-out; }
+#velo.sube { opacity: 1; transition: opacity .17s ease-in; }
+
+@keyframes aparece { from { opacity: 0; } }
+@keyframes desdeDer { from { opacity: 0; transform: translateX(6cqw); } }
+@keyframes desdeIzq { from { opacity: 0; transform: translateX(-6cqw); } }
+@keyframes desdeAbajo { from { opacity: 0; transform: translateY(4cqw); } }
+@keyframes sale { to { opacity: 0; transform: translateY(-1.2cqw); } }
+
+/* backwards = la animación solo se nota al empezar; después manda el estilo normal (así no pisa el :hover) */
+.pantalla.entra, #info-personaje.entra { animation: aparece .4s ease-out backwards; }
+.pantalla.sale { animation: sale .17s ease-in forwards; }
+.entra .item { animation: desdeDer .55s cubic-bezier(.2,.8,.2,1) backwards; animation-delay: calc(var(--i, 0) * 90ms + 80ms); }
+.entra .item.desde-izq { animation-name: desdeIzq; }
+.entra .item.desde-abajo { animation-name: desdeAbajo; }
+#info-personaje.entra { animation-name: desdeAbajo; animation-delay: .35s; }
+
+@media (prefers-reduced-motion: reduce) {
+  .pantalla.entra, .entra .item, #info-personaje.entra, .pulsa, #esc-boton { animation: none; }
+  #velo { transition: none; }
+}

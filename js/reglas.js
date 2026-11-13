@@ -19,6 +19,7 @@ export function crearBatalla(personaje, enemigo) {
   return {
     jugador: luchador(personaje, personaje.vida),
     enemigo: luchador(enemigo, enemigo.vidaMax),
+    ronda: 1,                                           // sube cada vez que vuelve el turno al jugador
     turno: "jugador",                                   // "jugador" | "enemigo" | "fin"
     restantes: TIPOS[personaje.tipo].turnosPorRonda,    // acciones que le quedan a quien tiene el turno
     ganador: null,
@@ -67,6 +68,7 @@ export function ejecutarAccion(b, quien, accion) {
   if (b.restantes <= 0) {                               // pasa el turno al rival
     b.turno = quien === "jugador" ? "enemigo" : "jugador";
     b.restantes = TIPOS[b[b.turno].tipo].turnosPorRonda;
+    if (b.turno === "jugador") b.ronda++;
   }
   return msg;
 }

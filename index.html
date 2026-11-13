@@ -36,22 +36,52 @@
 
       <div id="info-personaje"></div>
 
-      <section id="pantalla-menu">
-        <h1>Medallion Project</h1>
-        <div id="lista-capitulos"></div>
-        <button id="btn-ajustes" class="boton">Ajustes</button>
+      <div id="velo"></div>   <!-- fundido a negro entre pantallas -->
+
+      <!-- 1) Pantalla de título: "pulsa para empezar" -->
+      <section id="pantalla-inicio" class="pantalla" hidden>
+        <h1 class="titulo-grande">Medallion<br>Project</h1>
+        <p class="subtitulo-inicio">Demo</p>
+        <p class="pulsa">Haz clic o pulsa cualquier tecla para empezar</p>
       </section>
 
-      <section id="pantalla-ajustes" hidden>
-        <h2>Ajustes de sonido</h2>
+      <!-- 2) Menú principal -->
+      <section id="pantalla-principal" class="pantalla" hidden>
+        <h1>Medallion Project</h1>
+        <div id="lista-opciones">
+          <button id="op-capitulos" class="opcion item" style="--i:0"><span class="titulo">Capítulos</span><span class="sub">Elige tu próxima batalla</span></button>
+          <button id="op-bestiario" class="opcion item proximamente" style="--i:1"><span class="titulo">Bestiario</span><span class="sub">Próximamente</span></button>
+          <button id="op-ajustes" class="opcion item" style="--i:2"><span class="titulo">Ajustes</span><span class="sub">Sonido y partida guardada</span></button>
+        </div>
+      </section>
+
+      <!-- 3) Selección de capítulos -->
+      <section id="pantalla-capitulos" class="pantalla" hidden>
+        <div id="lista-capitulos"></div>
+        <div id="fila-inferior">
+          <button id="btn-volver-principal" class="boton item" style="--i:3">Volver</button>
+          <button id="btn-intro" class="boton item" style="--i:4">Introducción</button>
+        </div>
+      </section>
+
+      <section id="pantalla-ajustes" class="pantalla" hidden>
+        <h2>Ajustes</h2>
         <div id="lista-sliders"></div>
+        <h3>Partida guardada</h3>
+        <p class="nota">Se guarda sola en este navegador. Aquí puedes sacarla a un archivo .txt o cargarla desde uno.</p>
+        <div class="fila-botones">
+          <button id="btn-exportar" class="boton">Guardar en .txt</button>
+          <button id="btn-importar" class="boton">Cargar .txt</button>
+          <button id="btn-borrar" class="boton">Borrar datos</button>
+        </div>
+        <input id="archivo-partida" type="file" accept=".txt,text/plain" hidden>
         <button id="btn-volver" class="boton">Volver</button>
       </section>
 
-      <section id="pantalla-combate" hidden>
+      <section id="pantalla-combate" class="pantalla" hidden>
         <div id="orden-turnos" aria-label="Orden de turnos"></div>
 
-        <div id="hud-enemigo" class="hud">
+        <div id="hud-enemigo" class="hud item desde-der">
           <div id="e-nombre" class="nombre-hud"></div>
           <div id="e-vida" class="vida-texto"></div>
           <div class="barra"><div id="e-barra" class="relleno"></div></div>
@@ -59,7 +89,7 @@
 
         <p id="mensaje-combate" role="status"></p>
 
-        <div id="hud-jugador" class="hud">
+        <div id="hud-jugador" class="hud item desde-izq">
           <div id="j-retrato" aria-hidden="true"></div> <!-- placeholder: aquí irá la imagen del personaje -->
           <div class="datos">
             <div id="j-nombre" class="nombre-hud"></div>
@@ -68,7 +98,7 @@
           </div>
         </div>
 
-        <div id="acciones">
+        <div id="acciones" class="item desde-der" style="--i:1">
           <button class="boton" data-accion="atacar">Atacar</button>
           <button id="btn-secundaria" class="boton" data-accion="defender">Defender</button>
           <button class="boton" data-accion="huir">Huir</button>
@@ -80,6 +110,16 @@
             <button id="btn-reintentar" class="boton">Reintentar</button>
             <button id="btn-salir" class="boton">Volver al menú</button>
           </div>
+        </div>
+      </section>
+
+      <section id="pantalla-escena" class="pantalla" hidden>
+        <button id="esc-prev" class="flecha" aria-label="Anterior">&#8249;</button>
+        <button id="esc-sig" class="flecha" aria-label="Siguiente">&#8250;</button>
+        <div id="esc-marco" class="item desde-abajo" data-lado="izquierda">
+          <div id="esc-etiqueta"></div>
+          <div id="esc-caja"><p id="esc-texto" aria-live="polite"></p></div>
+          <button id="esc-boton" class="boton" hidden></button>
         </div>
       </section>
 

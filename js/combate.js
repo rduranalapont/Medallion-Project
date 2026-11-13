@@ -5,22 +5,41 @@ import { TIPOS, ACCIONES } from "./data/tipos.js";
 import { crearBatalla, ejecutarAccion, accionSecundaria } from "./reglas.js";
 import { sonidoClick } from "./audio.js";
 import { mostrarPantalla } from "./pantallas.js";
+import { registrarVisto, registrarDerrota, registrarMuerte, completarCapitulo } from "./guardado.js";
+import { reproducirEscena, reproducirEscenas, triggersPendientes } from "./escenas.js";
 
 const $ = (id) => document.getElementById(id);
 const PAUSA_ENEMIGO = 1000;   // ms entre cada acción del enemigo
 let capitulo = null, espera = null;
+
+const contexto = () => ({ enemigo: capitulo?.enemigo });   // lo que necesitan las escenas ("enemigo" = el de este capítulo)
+
+// Entrada de un capítulo: primero su escena inicial (si tiene) y después la pelea
+export function iniciarCapitulo(cap) {
+  capitulo = cap;
+  if (cap.escenaInicio) reproducirEscena(cap.escenaInicio, contexto(), () => iniciarCombate(cap));
+  else iniciarCombate(cap);
+}
 
 export function iniciarCombate(cap) {
   const p = personajeActual(), e = ENEMIGOS[cap.enemigo];
   capitulo = cap;
   estado.batalla = crearBatalla(p, e);
   $("resultado").hidden = true;
+  registrarVisto("personajes", p.id); registrarVisto("enemigos", e.id);     // se desbloquean en el bestiario
+  estado.batalla.t0 = performance.now();                                    // para la animación de entrada de los luchadores
   mostrarPantalla("combate");
   const retrato = $("j-retrato");                       // con imagen: la cara; sin imagen: inicial sobre el color
   retrato.textContent = p.retrato ? "" : p.nombre[0];
   retrato.style.background = p.retrato ? `url("${p.retrato}") center / cover` : p.color;
   mensaje(e.intro ?? `¡${e.nombre} aparece!`);
   refrescar();
+  reproducirEscenas(triggersPendientes(estado.batalla, cap, "inicio"), contexto(), volverAlCombate);   // diálogos de "inicio"
+}
+
+function volverAlCombate() {
+  if (!estado.batalla) return;
+  mostrarPantalla("combate"); refrescar();
 }
 
 function mensaje(t) { if (t) $("mensaje-combate").textContent = t; }
@@ -73,11 +92,24 @@ function turnoEnemigo() {
 function siguiente() {
   const b = estado.batalla;
   refrescar();
-  if (b.turno === "fin") return terminar(b.ganador === "jugador");
-  if (b.turno === "enemigo") espera = setTimeout(turnoEnemigo, PAUSA_ENEMIGO);
+  const continuar = () => {                                   // se ejecuta cuando terminan los diálogos (o enseguida si no hay)
+    if (!estado.batalla) return;
+    volverAlCombate();
+    if (b.turno === "fin") return terminar(b.ganador === "jugador");
+    if (b.turno === "enemigo") espera = setTimeout(turnoEnemigo, PAUSA_ENEMIGO);
+  };
+  const escenas = b.turno === "fin" ? [] : triggersPendientes(b, capitulo, "accion");
+  reproducirEscenas(escenas, contexto(), continuar);          // el combate queda en pausa mientras suena el diálogo
 }
 
 function terminar(victoria) {
+  if (victoria) { registrarDerrota(capitulo.enemigo); completarCapitulo(capitulo.id); } else registrarMuerte();
+  // Si ganas y el capítulo tiene escena final, se reproduce antes de mostrar "Victoria"
+  if (victoria && capitulo?.escenaFinal) return reproducirEscena(capitulo.escenaFinal, contexto(), () => { volverAlCombate(); mostrarResultado(true); });
+  mostrarResultado(victoria);
+}
+
+function mostrarResultado(victoria) {
   $("resultado-titulo").textContent = victoria ? "Victoria" : "Derrota";
   $("resultado-titulo").className = victoria ? "victoria" : "derrota";
   $("btn-reintentar").hidden = victoria;     // solo se puede reintentar tras perder
@@ -87,7 +119,7 @@ function terminar(victoria) {
 function salir() {
   clearTimeout(espera);
   estado.batalla = null;
-  mostrarPantalla("menu");
+  mostrarPantalla("capitulos");
 }
 
 export function prepararCombate() {
