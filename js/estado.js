@@ -14,12 +14,12 @@ export const estado = {
 
 // Recuperar ajustes guardados en el navegador (si existen)
 try {
-  const guardado = JSON.parse(localStorage.getItem("medalion_ajustes"));
+  const guardado = JSON.parse(localStorage.getItem("medallion_ajustes") ?? localStorage.getItem("medalion_ajustes"));
   if (guardado) Object.assign(estado.ajustes, guardado);
 } catch (e) { /* sin almacenamiento: usamos los valores por defecto */ }
 
 export function guardarAjustes() {
-  try { localStorage.setItem("medalion_ajustes", JSON.stringify(estado.ajustes)); } catch (e) {}
+  try { localStorage.setItem("medallion_ajustes", JSON.stringify(estado.ajustes)); } catch (e) {}
 }
 
 export function personajeActual() {

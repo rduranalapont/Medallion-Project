@@ -3,7 +3,7 @@ import { CAPITULOS } from "./data/capitulos.js";
 import { PERSONAJES } from "./data/personajes.js";
 import { TIPOS } from "./data/tipos.js";
 import { estado, personajeActual, guardarAjustes } from "./estado.js";
-import { datos, exportarTxt, importarTxt, borrarPartida, marcarIntroVista } from "./guardado.js";
+import { datos, recargadaPorGuardado, guardarAhora, elegirArchivo, cargarArchivo, cargarDesdeTexto, reconectar, estadoArchivo, soportaArchivo, borrarPartida, marcarIntroVista } from "./guardado.js";
 import { aplicarVolumenes, sonidoClick, iniciarMusica } from "./audio.js";
 import { mostrarPantalla } from "./pantallas.js";
 import { reproducirEscena } from "./escenas.js";
@@ -23,6 +23,7 @@ function crearTitulo() {
   const empezar = () => {
     if (estado.vista !== "inicio") return;
     sonidoClick(); iniciarMusica();                           // el audio solo puede arrancar tras un clic o tecla
+    reconectar();                                             // si hay archivo de guardado, pide permiso (necesita un clic)
     mostrarPantalla("principal");
   };
   $("pantalla-inicio").addEventListener("click", empezar);
@@ -104,19 +105,55 @@ function crearAjustes() {
   }
   $("btn-volver").addEventListener("click", () => { sonidoClick(); mostrarPantalla("principal"); });
 
-  // Partida guardada (.txt)
-  $("btn-exportar").addEventListener("click", () => { sonidoClick(); exportarTxt(); aviso("Partida guardada en medalion_partida.txt"); });
-  $("btn-importar").addEventListener("click", () => { sonidoClick(); $("archivo-partida").click(); });
-  $("archivo-partida").addEventListener("change", async (e) => {
-    const archivo = e.target.files[0]; e.target.value = "";
-    if (!archivo) return;
-    aviso(await importarTxt(archivo) ? "Partida cargada" : "Ese archivo no es una partida válida");
+  // Partida guardada: archivo .txt vinculado (se elige una vez y después se escribe solo)
+  $("btn-elegir").addEventListener("click", async () => {
+    sonidoClick();
+    if (!soportaArchivo) return aviso("Este navegador no permite elegir archivo: usa el disquete para descargar una copia");
+    if (await elegirArchivo()) aviso("Archivo vinculado: la partida se guardará sola ahí");
+  });
+  $("btn-importar").addEventListener("click", async () => {
+    sonidoClick();
+    if (!soportaArchivo) return $("archivo-partida").click();
+    const r = await cargarArchivo();
+    if (r === "ok") aviso("Partida cargada y archivo vinculado"); else if (r === "invalido") aviso("Ese archivo no es una partida válida");
+  });
+  $("archivo-partida").addEventListener("change", async (e) => {       // solo en navegadores sin acceso a archivos
+    const f = e.target.files[0]; e.target.value = "";
+    if (f) aviso(await cargarDesdeTexto(f) ? "Partida cargada" : "Ese archivo no es una partida válida");
   });
   $("btn-borrar").addEventListener("click", () => {
     sonidoClick();
     if (confirm("¿Borrar todos los datos de la partida? (tiempo, invocaciones, capítulos completados, introducción...)")) {
       borrarPartida(); aviso("Datos borrados");
     }
+  });
+  document.addEventListener("archivo-cambiado", actualizarEstadoArchivo);
+  actualizarEstadoArchivo();
+}
+
+// Texto de estado en Ajustes y punto de color en el disquete (verde = archivo listo, ámbar = pide permiso)
+function actualizarEstadoArchivo() {
+  const { nombre, permiso } = estadoArchivo();
+  $("btn-guardar").dataset.estado = permiso;
+  $("estado-archivo").textContent = !soportaArchivo
+    ? "Este navegador no puede vincular un archivo: el disquete descarga una copia .txt (y la partida se guarda sola en el navegador)."
+    : permiso === "pausado" ? "Guardado en archivo EN PAUSA: guardar ahí recarga la página (pasa con Live Server cuando el archivo está dentro de la carpeta del proyecto). Pulsa «Elegir archivo» y guárdalo fuera de la carpeta, por ejemplo en Documentos. Mientras tanto la partida se guarda en el navegador."
+    : permiso === "listo" ? `Archivo vinculado: ${nombre}. Se guarda solo cuando pasa algo importante. Con Live Server, mantenlo fuera de la carpeta del proyecto.`
+    : permiso === "pendiente" ? `Archivo vinculado: ${nombre}. Pulsa el disquete para dar permiso otra vez.`
+    : "Sin archivo vinculado: se guarda en el navegador. Pulsa el disquete para elegir dónde guardarlo (solo una vez). Con Live Server, elige un sitio fuera de la carpeta del proyecto.";
+}
+
+// Disquete: guardar ahora
+function crearDisquete() {
+  const boton = $("btn-guardar");
+  boton.addEventListener("click", async () => {
+    sonidoClick();
+    const donde = await guardarAhora();
+    boton.classList.remove("ok"); void boton.offsetWidth; boton.classList.add("ok");              // destello
+    aviso(donde === "archivo" ? `Partida guardada en ${estadoArchivo().nombre}`
+        : donde === "pausado" ? "Guardado en archivo en pausa (recarga continua detectada): mira Ajustes"
+        : donde === "descarga" ? "Copia de la partida descargada (.txt)"
+        : "Partida guardada en el navegador");
   });
 }
 
@@ -156,7 +193,7 @@ function crearBarraSuperior() {
 }
 
 export function iniciarMenu() {
-  crearTitulo(); crearPrincipal(); crearCapitulos(); crearAjustes(); crearBarraSuperior();
+  crearTitulo(); crearPrincipal(); crearCapitulos(); crearAjustes(); crearDisquete(); crearBarraSuperior();
   actualizarSilencio(); mostrarPersonaje();
   document.addEventListener("personaje-cambiado", mostrarPersonaje);
   document.addEventListener("pantalla", (e) => { if (e.detail === "capitulos") actualizarCapitulos(); });   // al volver: ✓ en los completados
@@ -164,5 +201,11 @@ export function iniciarMenu() {
     estado.ID_personaje = PERSONAJES[datos.ultimoPersonaje] ? datos.ultimoPersonaje : null;
     mostrarPersonaje();
   });
-  mostrarPantalla("inicio");
+  // Si la página se recargó por culpa de un guardado, se vuelve a la pantalla en la que estabas (no al título)
+  const vista = sessionStorage.getItem("medallion_vista");
+  if (recargadaPorGuardado) {
+    mostrarPantalla(["principal", "capitulos", "ajustes"].includes(vista) ? vista : "capitulos");
+    document.addEventListener("pointerdown", () => { iniciarMusica(); reconectar(); }, { once: true });   // el audio necesita un clic
+    setTimeout(() => aviso("Guardar en ese archivo recarga la página (Live Server). Se ha pausado: elige otra ubicación con el disquete"), 900);
+  } else mostrarPantalla("inicio");
 }

@@ -5,6 +5,7 @@ import { estado } from "./estado.js";
 const NOMBRES = ["inicio", "principal", "capitulos", "ajustes", "combate", "escena"];
 const FONDO_DE = { inicio: "titulo", principal: "titulo", ajustes: "titulo", capitulos: "menu", combate: "combate" };  // qué dibuja el canvas detrás ("escena" no lo cambia)
 const CON_VELO = new Set(["inicio", "combate", "escena"]);   // en estos cambios la pantalla pasa por un fundido a negro
+const CON_GUARDADO = new Set(["principal", "capitulos", "ajustes"]);   // menús donde se ve el disquete (no en el título)
 const MS_SALIDA = 180;
 const $ = (id) => document.getElementById(id);
 let destino = null, ocupado = false;
@@ -13,8 +14,10 @@ let destino = null, ocupado = false;
 function aplicar(nombre) {
   for (const n of NOMBRES) $("pantalla-" + n).hidden = n !== nombre;
   estado.vista = nombre;
+  try { sessionStorage.setItem("medallion_vista", nombre); } catch (e) {}   // para volver aquí si la página se recarga
   if (FONDO_DE[nombre]) estado.escena = FONDO_DE[nombre];
-  $("info-personaje").hidden = nombre !== "capitulos";
+  $("info-personaje").hidden = nombre !== "capitulos";      // la medalla invocada solo se muestra en Capítulos
+  $("btn-guardar").hidden = !CON_GUARDADO.has(nombre);
   for (const el of [$("pantalla-" + nombre), nombre === "capitulos" ? $("info-personaje") : null]) {
     if (!el) continue;
     el.classList.remove("sale", "entra"); void el.offsetWidth; el.classList.add("entra");   // reinicia la animación

@@ -1,6 +1,5 @@
 // Todo lo que se dibuja en el Canvas 2D: fondo de estrellas y la medalla del personaje.
 import { estado, personajeActual } from "./estado.js";
-import { PERSONAJES, PERSONAJE_INTRODUCTORIO } from "./data/personajes.js";
 
 const lienzo = document.getElementById("lienzo");
 const c = lienzo.getContext("2d");
@@ -88,10 +87,36 @@ function dibujarSplash(img, color, anclaX, e = 1) {                 // e: progre
   c.globalAlpha = 1;
 }
 
-// Pantalla de título y menú principal: el arte principal del juego (el personaje introductorio)
-function dibujarTitulo() {
-  const p = PERSONAJES[PERSONAJE_INTRODUCTORIO], arte = imagen(p?.splash);
-  if (arte) dibujarSplash(arte, p.color, p.anclaX ?? 0.5, progreso(tEscena, 700));
+// Emblema del juego: el título y los menús sin personaje muestran un medallón con anillos que giran.
+// Se desliza (y encoge) del centro del título a la izquierda de los menús.
+const emblema = { x: 480, y: 262, r: 215, a: 0 };
+function dibujarTitulo(t) {
+  const meta = estado.vista === "inicio" ? { x: 480, y: 262, r: 215, a: 0.5 } : { x: 255, y: 292, r: 165, a: 1 };
+  for (const k of ["x", "y", "r", "a"]) emblema[k] += (meta[k] - emblema[k]) * 0.09;
+  const { x, y, r, a } = emblema;
+  if (a < 0.01) return;
+  c.save(); c.globalAlpha = a; c.translate(x, y);
+  const brillo = c.createRadialGradient(0, 0, r * .2, 0, 0, r * 1.5);
+  brillo.addColorStop(0, "#d9b45a55"); brillo.addColorStop(1, "#d9b45a00");
+  c.fillStyle = brillo; c.fillRect(-r * 1.6, -r * 1.6, r * 3.2, r * 3.2);
+  c.beginPath(); c.arc(0, 0, r, 0, 7); c.fillStyle = "#1a1f3d"; c.fill();            // disco y aro dorado
+  c.lineWidth = r * .045; c.strokeStyle = "#d9b45a"; c.stroke();
+  c.save(); c.rotate(t / 9000); c.strokeStyle = "#d9b45a";                             // marcas giratorias
+  for (let i = 0; i < 48; i++) {
+    c.rotate(Math.PI / 24); c.lineWidth = r * (i % 4 ? .01 : .018);
+    c.beginPath(); c.moveTo(r * .88, 0); c.lineTo(r * (i % 4 ? .83 : .78), 0); c.stroke();
+  }
+  c.restore();
+  c.save(); c.rotate(-t / 14000); c.setLineDash([r * .08, r * .05]);                  // anillo discontinuo en sentido contrario
+  c.lineWidth = r * .012; c.strokeStyle = "rgba(239,227,194,.7)";
+  c.beginPath(); c.arc(0, 0, r * .68, 0, 7); c.stroke(); c.restore();
+  c.beginPath(); c.arc(0, 0, r * .55, 0, 7); c.fillStyle = "#232a52"; c.fill();       // núcleo con la inicial del juego
+  c.lineWidth = r * .02; c.strokeStyle = "#d9b45a"; c.stroke();
+  if (estado.vista !== "inicio") {                                                    // en el título el nombre del juego ya ocupa el centro
+    c.fillStyle = "#d9b45a"; c.font = `700 ${r * .62}px Cinzel, serif`; c.textAlign = "center"; c.textBaseline = "middle";
+    c.fillText("M", 0, r * .03);
+  }
+  c.restore();
 }
 
 function dibujarMedalla(t) {
@@ -183,9 +208,9 @@ export function dibujar(t) {
   const d = estado.vista === "escena" ? estado.dialogo : null;   // el diálogo solo se dibuja cuando su pantalla ya se está viendo
   if (d?.def.tipo === "cinematica") { dibujarFondoEscena(d.actual?.fondo); dibujarRetratoEscena(d.actual); return; }
   dibujarFondo();
-  if (estado.escena === "combate") dibujarCombate();
-  else if (estado.escena === "titulo") dibujarTitulo();
-  else dibujarMedalla(t);
+  if (estado.escena === "combate") { emblema.a = 0; dibujarCombate(); }
+  else if (estado.escena === "titulo") dibujarTitulo(t);
+  else { emblema.a = 0; dibujarMedalla(t); }
   if (d) {                                                        // diálogo sobre el combate: fondo que se oscurece + arte
     c.fillStyle = `rgba(5,6,15,${.62 * progreso(d.tInicio, 350)})`; c.fillRect(0, 0, 960, 540);
     dibujarRetratoEscena(d.actual);

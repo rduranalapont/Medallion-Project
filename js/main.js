@@ -4,9 +4,10 @@ import { prepararCombate } from "./combate.js";
 import { prepararEscenas } from "./escenas.js";
 import { dibujar } from "./render.js";
 import { cargarPersonaje } from "./estado.js";
-import { iniciarCronometro } from "./guardado.js";
+import { iniciarCronometro, iniciarArchivo } from "./guardado.js";
 
 iniciarCronometro();
+iniciarArchivo();
 iniciarMenu();
 prepararCombate();
 prepararEscenas();
