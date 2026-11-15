@@ -1,1 +1,0 @@
-Apartado web del proyecto.
