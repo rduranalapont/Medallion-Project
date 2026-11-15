@@ -7,14 +7,14 @@
     <title>Medallion Project | RPG por turnos con medallas NFC</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;1,6..72,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Permanent+Marker&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;1,6..72,400&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
     <nav class="nav" aria-label="Secciones">
         <a class="nav-brand" href="#inicio" aria-label="Medalion Project, inicio">
-            <img src="logo.png" alt="Medalion Project" width="1060" height="259">
+            <img src="logo-blanco.png" alt="Medalion Project" width="1060" height="259">
         </a>
         <div class="nav-links">
             <a href="#historia">Historia</a>
@@ -31,7 +31,7 @@
     <header class="hero" id="inicio">
         <div class="hero-text">
             <h1>
-                <img src="logo.png" alt="Medalion Project" width="1060" height="259">
+                <img src="logo-blanco.png" alt="Medalion Project" width="1060" height="259">
             </h1>
             <p class="tagline">Un RPG clásico por turnos.<br>Tus personajes viven en una medalla que puedes sostener, guardar e intercambiar.</p>
             <div class="hero-actions">
@@ -43,11 +43,12 @@
         <div class="hero-visual" id="hero-chars" role="group" aria-roledescription="carrusel" aria-label="Personajes de Medallion Project">
             <div class="medallion">
                 <div class="disc"></div>
+                <div class="burst" aria-hidden="true"><span>RPG<br>por<br>turnos</span></div>
                 <div class="figure is-active" data-name="Tenshi" role="group" aria-roledescription="diapositiva" aria-label="1 de 2: Tenshi">
-                    <img src="tenshi.webp" alt="Tenshi saliendo de una medalla dorada" width="758" height="1400">
+                    <img src="tenshi.webp" alt="Tenshi saliendo de una medalla" width="758" height="1400">
                 </div>
                 <div class="figure" data-name="Mayu" role="group" aria-roledescription="diapositiva" aria-label="2 de 2: Mayu" aria-hidden="true" style="--dx: 0%">
-                    <img src="mayu.webp" alt="Mayu saliendo de una medalla dorada" width="700" height="1400">
+                    <img src="mayu.webp" alt="Mayu saliendo de una medalla" width="700" height="1400">
                 </div>
             </div>
 
@@ -68,6 +69,15 @@
             </div>
         </div>
     </header>
+
+    <div class="ticker-wrap ticker-wrap--start" aria-hidden="true">
+        <div class="ticker">
+            <div class="ticker-track">
+                <div class="ticker-group"><span>Medallion Project</span><span>RPG por turnos</span><span>Medallas NFC</span><span>Sostén · guarda · intercambia</span><span>Medallion Project</span><span>RPG por turnos</span><span>Medallas NFC</span><span>Sostén · guarda · intercambia</span></div>
+                <div class="ticker-group"><span>Medallion Project</span><span>RPG por turnos</span><span>Medallas NFC</span><span>Sostén · guarda · intercambia</span><span>Medallion Project</span><span>RPG por turnos</span><span>Medallas NFC</span><span>Sostén · guarda · intercambia</span></div>
+            </div>
+        </div>
+    </div>
 
     <main>
         <section id="historia" class="story">
@@ -166,7 +176,7 @@
         </section>
 
         <section id="personajes" class="section">
-            <div class="wrap split">
+            <div class="wrap split char-split">
                 <div class="split-head">
                     <h2>Personajes</h2>
                     <div class="char-panel" id="char-tenshi" role="tabpanel" aria-labelledby="tab-tenshi">
@@ -177,10 +187,10 @@
                     <!-- TEXTO PROVISIONAL de Mayu: sustituye el rol y la descripción por los definitivos. -->
                     <div class="char-panel" id="char-mayu" role="tabpanel" aria-labelledby="tab-mayu" hidden>
                         <h3 class="char-name">Mayu</h3>
-                        <p class="role">Rol por definir</p>
-                        <p class="char-desc">Ágil y de mirada tranquila, lanza sus kunais antes de que el enemigo termine de moverse. Escribe aquí su descripción definitiva.</p>
+                        <p class="role">El demonio del nuevo mundo</p>
+                        <p class="char-desc">Ágil y de naturaleza impulsiva, se unió al gremio para buscar la verdad tras la catástrofe y el origen de la luz</p>
                     </div>
-                </div>
+
                 <div class="medals" id="char-tabs" role="tablist" aria-label="Elige un personaje">
                     <button class="medal" type="button" role="tab" id="tab-tenshi" aria-controls="char-tenshi" aria-selected="true">
                         <span class="medal-disc medal-char medal-tenshi">
@@ -190,7 +200,7 @@
                     </button>
                     <button class="medal" type="button" role="tab" id="tab-mayu" aria-controls="char-mayu" aria-selected="false" tabindex="-1">
                         <span class="medal-disc medal-char medal-mayu">
-                            <img src="mayu.webp" alt="" width="700" height="1400">
+                            <img src="mayu-cara.webp" alt="" width="560" height="560">
                         </span>
                         <span class="medal-label">Mayu</span>
                     </button>
@@ -198,6 +208,17 @@
                         <div class="medal-disc medal-locked"><span>?</span></div>
                         <span class="medal-label">Por descubrir</span>
                     </div>
+                </div>
+                </div>
+                <div class="char-stage" aria-hidden="true">
+                    <figure class="char-art is-active" data-char="char-tenshi" style="--slab: var(--pink)">
+                        <span class="char-ghost">Tenshi</span>
+                        <img src="tenshi.webp" alt="" width="758" height="1400">
+                    </figure>
+                    <figure class="char-art" data-char="char-mayu" style="--slab: var(--neon)">
+                        <span class="char-ghost">Mayu</span>
+                        <img src="mayu.webp" alt="" width="700" height="1400">
+                    </figure>
                 </div>
             </div>
         </section>
@@ -276,6 +297,15 @@
             </div>
         </section>
 
+        <div class="ticker-wrap ticker-wrap--end ticker--neon" aria-hidden="true">
+        <div class="ticker">
+            <div class="ticker-track">
+                <div class="ticker-group"><span>Pronto en tus manos</span><span>Tenshi</span><span>Mayu</span><span>Avísame</span><span>Pronto en tus manos</span><span>Tenshi</span><span>Mayu</span><span>Avísame</span><span>Pronto en tus manos</span><span>Tenshi</span><span>Mayu</span><span>Avísame</span></div>
+                <div class="ticker-group"><span>Pronto en tus manos</span><span>Tenshi</span><span>Mayu</span><span>Avísame</span><span>Pronto en tus manos</span><span>Tenshi</span><span>Mayu</span><span>Avísame</span><span>Pronto en tus manos</span><span>Tenshi</span><span>Mayu</span><span>Avísame</span></div>
+            </div>
+        </div>
+    </div>
+
         <section id="lanzamiento" class="launch">
             <div class="wrap launch-inner">
                 <h2>Pronto en tus manos</h2>
@@ -353,6 +383,9 @@
                     t.setAttribute('aria-selected', on ? 'true' : 'false');
                     t.tabIndex = on ? 0 : -1;
                     document.getElementById(t.getAttribute('aria-controls')).hidden = !on;
+                });
+                document.querySelectorAll('.char-art').forEach(function (a) {
+                    a.classList.toggle('is-active', a.getAttribute('data-char') === tab.getAttribute('aria-controls'));
                 });
                 if (focus) tab.focus();
             }

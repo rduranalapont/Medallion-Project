@@ -1,13 +1,23 @@
 :root {
     --white: #ffffff;
-    --mist: #f3f3f4;
-    --stone: #dcdde0;
-    --slate: #62666d;
-    --graphite: #25272b;
-    --gold: #c9a24a;
-    --gold-light: #ecd48f;
-    --gold-deep: #8f6d1c;
-    --display: "Jost", "Helvetica Neue", Arial, sans-serif;
+    --mist: #fff1f8;
+    --stone: #f3cfe2;
+    --slate: #6b5a67;
+    --graphite: #1b1322;
+    --pink: #ff5fae;
+    --pink-light: #ffb3da;
+    --pink-deep: #b5126a;
+    /*
+    Si lo cambiamos a azul:
+    --neon: #00c3ff;
+    --neon-glow: rgba(20, 130, 255, 0.45);
+    */
+    --neon: #39ff14;
+    --neon-glow: rgba(57, 255, 20, 0.45);
+    --display: "Anton", Impact, "Arial Narrow Bold", sans-serif;
+    --marker: "Permanent Marker", "Comic Sans MS", cursive;
+    --slant: 4vw;
+    --pad: clamp(4rem, 9vw, 7rem);
     --body: "Newsreader", Georgia, serif;
     --nav-h: 4.25rem;
 }
@@ -30,7 +40,7 @@ img { max-width: 100%; }
 a { color: inherit; }
 
 :focus-visible {
-    outline: 3px solid var(--gold);
+    outline: 3px solid var(--pink);
     outline-offset: 3px;
 }
 
@@ -59,14 +69,6 @@ h2 {
     letter-spacing: -0.01em;
 }
 
-h2::after {
-    content: "";
-    display: block;
-    width: 3.5rem;
-    height: 3px;
-    margin-top: 1.1rem;
-    background: var(--gold);
-}
 
 h3 {
     font-weight: 600;
@@ -89,16 +91,16 @@ h3 {
     font-size: 1.02rem;
     text-decoration: none;
     color: var(--graphite);
-    background: var(--gold);
-    border: 2px solid var(--gold);
+    background: var(--pink);
+    border: 2px solid var(--pink);
     border-radius: 999px;
     cursor: pointer;
     transition: background-color 0.2s, color 0.2s, border-color 0.2s;
 }
 
 .btn:hover {
-    background: var(--gold-light);
-    border-color: var(--gold-light);
+    background: var(--neon);
+    border-color: var(--neon);
 }
 
 .btn-ghost {
@@ -155,7 +157,7 @@ h3 {
     color: var(--slate);
 }
 
-.nav-links a:hover { color: var(--gold-deep); }
+.nav-links a:hover { color: var(--pink-deep); }
 
 /* ---------- Hero ---------- */
 .hero {
@@ -167,7 +169,7 @@ h3 {
     min-height: calc(100svh - var(--nav-h));
     margin: 0 auto;
     padding: 3rem clamp(1.5rem, 5vw, 4rem);
-    background: repeating-radial-gradient(circle at 76% 52%, transparent 0 70px, rgba(37, 39, 43, 0.045) 70px 71px);
+    background: repeating-radial-gradient(circle at 76% 52%, transparent 0 70px, rgba(255, 95, 174, 0.12) 70px 71px);
 }
 
 .hero-text {
@@ -210,12 +212,13 @@ h3 {
     position: absolute;
     inset: 0;
     border-radius: 50%;
-    background: radial-gradient(circle at 50% 35%, #4a4d54 0%, var(--graphite) 70%);
+    background: radial-gradient(circle at 50% 35%, #4b3558 0%, var(--graphite) 70%);
     box-shadow:
-        0 0 0 10px var(--gold),
+        0 0 0 10px var(--pink),
         0 0 0 13px var(--white),
-        0 0 0 14px var(--stone),
-        0 30px 60px rgba(37, 39, 43, 0.3);
+        0 0 0 15px var(--neon),
+        0 0 32px 12px var(--neon-glow),
+        0 30px 60px rgba(27, 19, 34, 0.3);
 }
 
 .disc::after {
@@ -223,7 +226,7 @@ h3 {
     position: absolute;
     inset: 5%;
     border-radius: 50%;
-    border: 2px dashed rgba(236, 212, 143, 0.55);
+    border: 2px dashed rgba(57, 255, 20, 0.6);
 }
 
 .figure {
@@ -275,7 +278,7 @@ h3 {
     padding: 0;
     color: var(--graphite);
     background: var(--white);
-    border: 2px solid var(--gold);
+    border: 2px solid var(--pink);
     border-radius: 50%;
     cursor: pointer;
     transition: background-color 0.2s, color 0.2s;
@@ -283,7 +286,7 @@ h3 {
 
 .hero-btn svg { width: 1.4rem; height: 1.4rem; }
 
-.hero-btn:hover { background: var(--gold); }
+.hero-btn:hover { background: var(--neon); border-color: var(--neon); }
 
 .hero-meta { text-align: center; }
 
@@ -307,12 +310,12 @@ h3 {
     height: 0.8rem;
     padding: 0;
     background: transparent;
-    border: 2px solid var(--gold);
+    border: 2px solid var(--pink);
     border-radius: 50%;
     cursor: pointer;
 }
 
-.hero-dots button[aria-current="true"] { background: var(--gold); }
+.hero-dots button[aria-current="true"] { background: var(--pink); }
 
 /* ---------- Historia ---------- */
 .story {
@@ -342,11 +345,11 @@ h3 {
     top: 0;
     bottom: 0;
     width: 3px;
-    background: linear-gradient(180deg, var(--gold-light), var(--gold) 60%, transparent);
-    box-shadow: 0 0 18px 2px rgba(236, 212, 143, 0.6);
+    background: linear-gradient(180deg, var(--neon), var(--pink) 65%, transparent);
+    box-shadow: 0 0 18px 2px var(--neon-glow);
 }
 
-.story-text p { margin: 0 0 1.25rem; max-width: 56ch; color: #d6d7da; }
+.story-text p { margin: 0 0 1.25rem; max-width: 56ch; color: #eadcec; }
 
 .story-text .story-lead {
     font-size: clamp(1.5rem, 3vw, 2rem);
@@ -357,7 +360,7 @@ h3 {
 .story-text .question {
     margin: 2rem 0 0;
     font-style: italic;
-    color: var(--gold-light);
+    color: var(--neon);
 }
 
 /* ---------- Secciones y rejillas ---------- */
@@ -414,9 +417,9 @@ h3 {
     place-items: center;
     width: 4rem;
     height: 4rem;
-    color: var(--gold-deep);
+    color: var(--pink-deep);
     background: var(--mist);
-    border: 2px solid var(--gold);
+    border: 2px solid var(--pink);
     border-radius: 50%;
 }
 
@@ -447,18 +450,18 @@ h3 {
     border-radius: 50%;
     background: radial-gradient(circle at 35% 30%, #ffffff, var(--stone) 80%);
     box-shadow:
-        0 0 0 1px #c5c7cb,
+        0 0 0 1px #e6bdd3,
         0 0 0 10px var(--white),
         0 0 0 11px var(--stone),
-        0 30px 50px rgba(37, 39, 43, 0.2);
+        0 30px 50px rgba(27, 19, 34, 0.2);
 }
 
 .base-slot {
     position: absolute;
     inset: 27%;
     border-radius: 50%;
-    background: radial-gradient(circle at 50% 35%, #4a4d54, var(--graphite) 75%);
-    box-shadow: 0 0 0 6px var(--gold), inset 0 6px 14px rgba(0, 0, 0, 0.5);
+    background: radial-gradient(circle at 50% 35%, #4b3558, var(--graphite) 75%);
+    box-shadow: 0 0 0 6px var(--pink), inset 0 6px 14px rgba(0, 0, 0, 0.5);
 }
 
 .base-slot::after {
@@ -466,7 +469,7 @@ h3 {
     position: absolute;
     inset: 22%;
     border-radius: 50%;
-    border: 2px dashed rgba(236, 212, 143, 0.6);
+    border: 2px dashed rgba(57, 255, 20, 0.7);
 }
 
 .led {
@@ -477,7 +480,7 @@ h3 {
     height: 1.05rem;
     margin: -0.525rem;
     border-radius: 50%;
-    background: var(--gold);
+    background: var(--neon);
     opacity: 0.3;
     transform: rotate(calc(var(--i) * 30deg)) translateY(calc(var(--size) * -0.4));
     animation: led 3.6s linear infinite;
@@ -486,7 +489,7 @@ h3 {
 
 @keyframes led {
     0%, 100% { opacity: 0.3; box-shadow: none; }
-    10% { opacity: 1; box-shadow: 0 0 14px 3px var(--gold-light); }
+    10% { opacity: 1; box-shadow: 0 0 14px 3px var(--neon); }
     30% { opacity: 0.3; box-shadow: none; }
 }
 
@@ -513,8 +516,8 @@ h3 {
     width: 0.8rem;
     height: 0.8rem;
     border-radius: 50%;
-    background: var(--gold);
-    box-shadow: 0 0 0 3px var(--mist), 0 0 0 4px var(--gold);
+    background: var(--pink);
+    box-shadow: 0 0 0 3px var(--mist), 0 0 0 4px var(--pink);
 }
 
 .features strong { color: var(--graphite); font-weight: 600; }
@@ -525,7 +528,7 @@ h3 {
 .role {
     margin: 0.25rem 0 1rem;
     font-style: italic;
-    color: var(--gold-deep);
+    color: var(--pink-deep);
 }
 
 .char-desc { margin: 0; max-width: 46ch; color: var(--slate); }
@@ -581,21 +584,21 @@ button.medal[aria-selected="true"] .medal-label {
 }
 
 .medal-char {
-    --mx: 12%;
-    --my: -4.5%;
-    --ms: 1.7;
-    background: radial-gradient(circle at 50% 35%, #4a4d54, var(--graphite) 75%);
-    box-shadow: 0 0 0 6px var(--gold), 0 0 0 8px var(--white), 0 0 0 9px var(--stone);
+    --mx: 13%;
+    --my: -10%;
+    --ms: 2;
+    background: radial-gradient(circle at 50% 35%, #4b3558, var(--graphite) 75%);
+    box-shadow: 0 0 0 6px var(--pink), 0 0 0 8px var(--white), 0 0 0 9px var(--stone);
     transition: box-shadow 0.2s, transform 0.2s;
 }
 
 button.medal:hover .medal-char { transform: translateY(-3px); }
 
 button.medal[aria-selected="true"] .medal-char {
-    box-shadow: 0 0 0 6px var(--gold), 0 0 0 9px var(--white), 0 0 0 11px var(--graphite);
+    box-shadow: 0 0 0 6px var(--pink), 0 0 0 9px var(--white), 0 0 0 11px var(--neon), 0 0 18px 9px var(--neon-glow);
 }
 
-.medal-mayu { --mx: -3%; --my: 3%; --ms: 1.5; }
+.medal-mayu { --mx: -3.5%; --my: 3%; --ms: 1.8; }
 
 .medal-char img {
     display: block;
@@ -611,11 +614,11 @@ button.medal[aria-selected="true"] .medal-char {
     display: grid;
     place-items: center;
     background: var(--mist);
-    border: 2px dashed #b9bcc2;
+    border: 2px dashed #e0a9c6;
     font-family: var(--display);
     font-weight: 600;
     font-size: clamp(2rem, 5vw, 3.2rem);
-    color: #b9bcc2;
+    color: #e0a9c6;
 }
 
 /* ---------- Prueba de concepto ---------- */
@@ -627,7 +630,7 @@ button.medal[aria-selected="true"] .medal-char {
 
 .concept h2 { color: var(--white); }
 
-.concept .lead { color: #d6d7da; }
+.concept .lead { color: #eadcec; }
 
 /* Carrusel */
 .carousel {
@@ -657,15 +660,16 @@ button.medal[aria-selected="true"] .medal-char {
     display: block;
     width: 100%;
     height: auto;
-    border: 3px solid var(--gold);
+    border: 3px solid var(--neon);
     border-radius: 14px;
+    box-shadow: 0 0 28px var(--neon-glow);
 }
 
 .slide figcaption {
     max-width: 62ch;
     margin: 1.25rem auto 0;
     text-align: center;
-    color: #d6d7da;
+    color: #eadcec;
     font-size: 1.1rem;
     line-height: 1.55;
 }
@@ -676,7 +680,7 @@ button.medal[aria-selected="true"] .medal-char {
     font-family: var(--display);
     font-weight: 600;
     font-size: 1.25rem;
-    color: var(--gold-light);
+    color: var(--pink-light);
 }
 
 .carousel-nav {
@@ -699,8 +703,8 @@ button.medal[aria-selected="true"] .medal-char {
     padding: 0;
     place-items: center;
     color: var(--white);
-    background: rgba(37, 39, 43, 0.85);
-    border: 2px solid var(--gold);
+    background: rgba(27, 19, 34, 0.85);
+    border: 2px solid var(--neon);
     border-radius: 50%;
     cursor: pointer;
     transition: background-color 0.2s, color 0.2s, opacity 0.2s;
@@ -708,7 +712,7 @@ button.medal[aria-selected="true"] .medal-char {
 
 .carousel-btn svg { width: 1.4rem; height: 1.4rem; }
 
-.carousel-btn:hover:not(:disabled) { color: var(--graphite); background: var(--gold); }
+.carousel-btn:hover:not(:disabled) { color: var(--graphite); background: var(--neon); }
 
 .carousel-btn:disabled { opacity: 0.3; cursor: default; }
 
@@ -727,12 +731,12 @@ button.medal[aria-selected="true"] .medal-char {
     height: 0.8rem;
     padding: 0;
     background: transparent;
-    border: 2px solid var(--gold);
+    border: 2px solid var(--neon);
     border-radius: 50%;
     cursor: pointer;
 }
 
-.carousel-dots button[aria-current="true"] { background: var(--gold); }
+.carousel-dots button[aria-current="true"] { background: var(--neon); }
 
 .carousel.has-js .carousel-btn { display: grid; }
 .carousel.has-js .carousel-dots { display: flex; }
@@ -749,7 +753,7 @@ button.medal[aria-selected="true"] .medal-char {
 
 .future-grid article {
     padding-top: 1.25rem;
-    border-top: 2px solid var(--gold);
+    border-top: 2px solid var(--pink);
 }
 
 .future-grid h3 { font-size: 1.25rem; margin-bottom: 0.4rem; }
@@ -759,11 +763,10 @@ button.medal[aria-selected="true"] .medal-char {
 /* ---------- Lanzamiento ---------- */
 .launch {
     padding: clamp(4rem, 9vw, 6.5rem) 0;
-    background: linear-gradient(135deg, var(--gold-light), var(--gold));
+    background: linear-gradient(135deg, var(--pink-light), var(--pink));
     text-align: center;
 }
 
-.launch h2::after { margin-left: auto; margin-right: auto; background: var(--graphite); }
 
 .launch-inner p { margin: 1.5rem auto 0; max-width: 46ch; }
 
@@ -797,15 +800,796 @@ footer {
     padding: 2.5rem 1.5rem;
     text-align: center;
     background: var(--graphite);
-    color: #b5b7bc;
+    color: #cdb9cd;
 }
 
 footer img { display: block; width: 180px; height: auto; margin: 0 auto 1.25rem; }
 
 footer p { margin: 0; font-size: 0.95rem; }
 
+/* =====================================================================
+   CAPA PUNK / GRAFFITERA (rosa + verde neón)
+   Va después de los estilos base y antes del bloque responsive.
+   ===================================================================== */
+:root {
+    --star: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+    --hazard: repeating-linear-gradient(-45deg, var(--graphite) 0 10px, var(--neon) 10px 20px);
+    --dots-pink: radial-gradient(rgba(255, 95, 174, 0.16) 1.3px, transparent 1.8px);
+    --dots-white: radial-gradient(rgba(255, 255, 255, 0.06) 1.5px, transparent 2px);
+}
+
+::selection { background: var(--neon); color: var(--graphite); }
+
+html, body { overflow-x: clip; }
+
+section[id] { scroll-margin-top: var(--nav-h); }
+
+/* Textura de puntos (trama de cómic) */
+body { background-image: var(--dots-pink); background-size: 16px 16px; }
+
+/* Tipografía de cartel */
+h1, h2, h3, .btn, .nav-links a, .hero-name, .medal-label, .medal-locked,
+.slide figcaption strong, .char-name {
+    font-weight: 400;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+h3 { font-size: 1.55rem; }
+
+/* Títulos de sección: recortes tipo "carta de rescate" */
+h2 {
+    position: relative;
+    width: fit-content;
+    max-width: 100%;
+    margin-bottom: 1.2rem;
+    padding: 0.12em 0.5em 0.04em;
+    font-size: clamp(2.1rem, 5vw, 3.4rem);
+    line-height: 1.15;
+    letter-spacing: 0.03em;
+    color: var(--white);
+    background: var(--graphite);
+    box-shadow: 8px 8px 0 var(--pink);
+    transform: rotate(-2deg) skew(-4deg);
+}
+
+h2::after {
+    content: "";
+    position: absolute;
+    top: -1.15rem;
+    right: -1.3rem;
+    width: 2.5rem;
+    height: 2.5rem;
+    background: var(--neon);
+    clip-path: var(--star);
+    transform: rotate(14deg);
+}
+
+.story h2, .concept h2 {
+    color: var(--graphite);
+    background: var(--white);
+    box-shadow: 8px 8px 0 var(--neon);
+}
+
+.story h2::after, .concept h2::after { background: var(--pink); }
+
+.launch h2 { margin-left: auto; margin-right: auto; box-shadow: 8px 8px 0 var(--white); }
+.launch h2::after { background: var(--white); }
+
+/* Botones tipo pegatina */
+.btn {
+    font-size: 1.2rem;
+    padding: 0.7rem 1.8rem 0.6rem;
+    color: var(--graphite);
+    background: var(--pink);
+    border: 3px solid var(--graphite);
+    border-radius: 0;
+    box-shadow: 5px 5px 0 var(--graphite);
+    transform: rotate(-1.5deg);
+    transition: transform 0.15s, box-shadow 0.15s, background-color 0.15s;
+}
+
+.btn:hover {
+    background: var(--neon);
+    border-color: var(--graphite);
+    box-shadow: 8px 8px 0 var(--pink);
+    transform: rotate(1deg) translate(-2px, -2px);
+}
+
+.btn-ghost { background: var(--white); }
+.btn-ghost:hover { background: var(--neon); color: var(--graphite); border-color: var(--graphite); }
+.btn-small { padding: 0.45rem 1.2rem 0.35rem; font-size: 1.05rem; box-shadow: 4px 4px 0 var(--graphite); }
+.btn-dark { color: var(--white); background: var(--graphite); box-shadow: 5px 5px 0 var(--white); }
+.btn-dark:hover { color: var(--graphite); background: var(--neon); border-color: var(--graphite); box-shadow: 8px 8px 0 var(--white); }
+
+/* Navegación con cinta de precaución */
+.nav {
+    background: rgba(255, 255, 255, 0.96);
+    border-bottom: 0;
+}
+
+.nav::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -9px;
+    height: 9px;
+    background: var(--hazard);
+    border-top: 3px solid var(--graphite);
+}
+
+.nav-links { gap: clamp(0.5rem, 1.6vw, 1.6rem); }
+
+.nav-brand { flex: none; }
+
+.nav-links a {
+    padding: 0.15rem 0.45rem 0;
+    font-size: 1.05rem;
+    color: var(--graphite);
+}
+
+.nav-links a:hover {
+    color: var(--graphite);
+    background: var(--neon);
+    transform: rotate(-3deg);
+}
+
+/* Hero: bandas diagonales, trama y salpicaduras */
+.hero {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    max-width: none;
+    margin: 0;
+    padding-left: max(clamp(1.5rem, 5vw, 4rem), calc((100% - 1280px) / 2 + clamp(1.5rem, 5vw, 4rem)));
+    padding-right: max(clamp(1.5rem, 5vw, 4rem), calc((100% - 1280px) / 2 + clamp(1.5rem, 5vw, 4rem)));
+    background:
+        linear-gradient(108deg, transparent 0 55%, var(--pink) 55% 68%, var(--graphite) 68% 70.5%, var(--neon) 70.5% 76%, transparent 76% 100%);
+}
+
+.hero::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -2;
+    background: radial-gradient(var(--graphite) 1.6px, transparent 2.1px) 0 0 / 14px 14px;
+    opacity: 0.2;
+    -webkit-mask-image: linear-gradient(100deg, transparent 42%, #000 85%);
+    mask-image: linear-gradient(100deg, transparent 42%, #000 85%);
+}
+
+.hero::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -2;
+    background:
+        radial-gradient(circle at 12% 78%, var(--neon) 0 6px, transparent 7px),
+        radial-gradient(circle at 9% 86%, var(--neon) 0 3px, transparent 4px),
+        radial-gradient(circle at 16% 94%, var(--pink) 0 5px, transparent 6px),
+        radial-gradient(circle at 3% 70%, var(--pink) 0 3px, transparent 4px),
+        radial-gradient(circle at 48% 10%, var(--neon) 0 4px, transparent 5px),
+        radial-gradient(circle at 52% 16%, var(--pink) 0 3px, transparent 4px),
+        radial-gradient(circle at 4% 92%, rgba(57, 255, 20, 0.5) 0 4%, transparent 22%);
+}
+
+.hero-text h1 img { filter: drop-shadow(5px 5px 0 var(--pink)); }
+
+.tagline {
+    padding: 1.1rem 1.4rem;
+    background: var(--white);
+    border: 3px solid var(--graphite);
+    box-shadow: 7px 7px 0 var(--neon);
+    transform: rotate(-1deg);
+}
+
+/* Rayos tipo "starburst" detrás de la medalla */
+.medallion::before {
+    content: "";
+    position: absolute;
+    inset: -30%;
+    z-index: -1;
+    border-radius: 50%;
+    background: repeating-conic-gradient(from 2deg, var(--graphite) 0 4deg, transparent 4deg 13deg);
+    opacity: 0.9;
+    -webkit-mask-image: radial-gradient(circle closest-side, #000 52%, transparent 100%);
+    mask-image: radial-gradient(circle closest-side, #000 52%, transparent 100%);
+}
+
+.disc {
+    box-shadow:
+        0 0 0 10px var(--pink),
+        0 0 0 14px var(--graphite),
+        0 0 0 18px var(--neon),
+        0 0 36px 14px var(--neon-glow),
+        14px 22px 0 18px rgba(27, 19, 34, 0.35);
+}
+
+/* Controles del carrusel de personajes */
+.hero-btn {
+    color: var(--graphite);
+    background: var(--white);
+    border: 3px solid var(--graphite);
+    border-radius: 0;
+    box-shadow: 4px 4px 0 var(--pink);
+}
+
+.hero-btn:hover { background: var(--neon); border-color: var(--graphite); transform: translate(-2px, -2px); }
+
+.hero-name {
+    display: inline-block;
+    padding: 0.1rem 0.8rem 0;
+    font-size: 1.5rem;
+    color: var(--white);
+    background: var(--graphite);
+    transform: rotate(-2deg);
+}
+
+.hero-dots button {
+    border: 2px solid var(--graphite);
+    border-radius: 0;
+    transform: rotate(45deg);
+}
+
+.hero-dots button[aria-current="true"] { background: var(--pink); }
+
+/* Cintas de texto (ticker) */
+.ticker-wrap {
+    position: relative;
+    z-index: 3;
+    overflow: hidden;
+    padding: 2.4rem 0;
+}
+
+.ticker-wrap--start { background: linear-gradient(transparent 50%, var(--graphite) 50%); }
+.ticker-wrap--end { background: linear-gradient(transparent 50%, var(--pink) 50%); }
+
+.ticker {
+    width: 110%;
+    margin-left: -5%;
+    color: var(--graphite);
+    background: var(--pink);
+    border-block: 4px solid var(--graphite);
+    transform: rotate(-1.6deg);
+}
+
+.ticker--neon .ticker { background: var(--neon); transform: rotate(1.4deg); }
+.ticker--neon .ticker-track { animation-direction: reverse; }
+
+.ticker-track {
+    display: flex;
+    width: max-content;
+    animation: ticker 32s linear infinite;
+}
+
+.ticker-group { display: flex; flex: none; }
+
+.ticker-group span {
+    display: flex;
+    align-items: center;
+    padding: 0.3rem 0 0.2rem;
+    font-family: var(--display);
+    font-size: 1.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    white-space: nowrap;
+}
+
+.ticker-group span::after {
+    content: "";
+    width: 1.1em;
+    height: 1.1em;
+    margin: 0 1.6rem;
+    background: var(--white);
+    clip-path: var(--star);
+}
+
+.ticker--neon .ticker-group span::after { background: var(--pink); }
+
+@keyframes ticker { to { transform: translateX(-50%); } }
+
+/* Secciones con cortes en diagonal */
+.story, .concept { background-image: var(--dots-white); background-size: 18px 18px; }
+
+.story::before {
+    content: "20XX";
+    position: absolute;
+    right: -2%;
+    top: 4%;
+    font-family: var(--display);
+    font-size: clamp(10rem, 30vw, 26rem);
+    line-height: 1;
+    color: transparent;
+    -webkit-text-stroke: 3px rgba(57, 255, 20, 0.22);
+    transform: rotate(-8deg);
+    pointer-events: none;
+}
+
+.story .wrap, .concept .wrap { position: relative; z-index: 1; }
+
+.story-text .question {
+    display: inline-block;
+    font-family: var(--marker);
+    font-style: normal;
+    font-size: 1.5rem;
+    transform: rotate(-1.5deg);
+}
+
+.synopsis, .base-section {
+    background-image: var(--dots-pink);
+    background-size: 16px 16px;
+    border-color: var(--graphite);
+}
+
+.synopsis-text .synopsis-lead {
+    display: inline;
+    padding: 0.05em 0.3em;
+    background: linear-gradient(transparent 8%, var(--neon) 8% 94%, transparent 94%);
+    -webkit-box-decoration-break: clone;
+    box-decoration-break: clone;
+    color: var(--graphite);
+}
+
+.synopsis-text .synopsis-lead + p { margin-top: 1.9rem; }
+
+/* Cómo se juega */
+.step { border-top: 3px dashed var(--graphite); }
+
+.step-icon {
+    color: var(--graphite);
+    background: var(--neon);
+    border: 3px solid var(--graphite);
+    border-radius: 0;
+    box-shadow: 4px 4px 0 var(--pink);
+    transform: rotate(-5deg);
+}
+
+.step:nth-child(even) .step-icon { background: var(--pink); box-shadow: 4px 4px 0 var(--neon); transform: rotate(4deg); }
+
+/* La base */
+.base-plate {
+    box-shadow:
+        0 0 0 4px var(--graphite),
+        14px 14px 0 4px var(--pink);
+}
+
+.features li::before {
+    top: 0.5em;
+    width: 0.85rem;
+    height: 0.85rem;
+    border: 2px solid var(--graphite);
+    border-radius: 0;
+    background: var(--neon);
+    box-shadow: none;
+    transform: rotate(45deg);
+}
+
+/* Personajes */
+.char-name {
+    margin-top: 2.5rem;
+    font-size: 2.6rem;
+    line-height: 1.1;
+    text-shadow: 3px 3px 0 var(--pink);
+}
+
+.role {
+    display: inline-block;
+    font-family: var(--marker);
+    font-style: normal;
+    font-size: 1.2rem;
+    transform: rotate(-1.5deg);
+}
+
+.medal-char {
+    box-shadow:
+        0 0 0 5px var(--pink),
+        0 0 0 8px var(--graphite),
+        8px 8px 0 8px rgba(27, 19, 34, 0.2);
+}
+
+button.medal[aria-selected="true"] .medal-char {
+    box-shadow:
+        0 0 0 5px var(--pink),
+        0 0 0 8px var(--graphite),
+        0 0 0 12px var(--neon),
+        0 0 20px 10px var(--neon-glow);
+}
+
+.medal-label { font-size: 1.15rem; }
+
+button.medal[aria-selected="true"] .medal-label {
+    display: inline-block;
+    padding: 0.1rem 0.7rem 0;
+    color: var(--neon);
+    background: var(--graphite);
+    transform: rotate(-3deg);
+}
+
+.medal-locked { border-color: var(--graphite); color: var(--graphite); background: var(--white); }
+
+/* Cara de Mayu: recorte ya centrado en el rostro */
+.medal-mayu { --mx: 0%; --my: 0%; --ms: 1; }
+.medal-mayu img { object-position: 50% 50%; transform-origin: 50% 50%; }
+
+/* Prueba de concepto */
+.concept::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(115deg, transparent 68%, rgba(255, 95, 174, 0.2) 68% 80%, rgba(57, 255, 20, 0.14) 80% 84%, transparent 84%);
+    pointer-events: none;
+}
+
+
+.carousel-track { border-radius: 0; }
+
+.slide { position: relative; }
+
+.slide img {
+    border: 5px solid var(--white);
+    border-radius: 0;
+    outline: 4px solid var(--pink);
+    outline-offset: -9px;
+    box-shadow: none;
+}
+
+.slide::before {
+    content: "";
+    position: absolute;
+    top: 14px;
+    left: 5%;
+    z-index: 1;
+    width: 110px;
+    height: 30px;
+    background: rgba(57, 255, 20, 0.8);
+    transform: rotate(-5deg);
+}
+
+.slide figcaption strong { font-size: 1.5rem; color: var(--neon); }
+
+.carousel-btn {
+    border: 3px solid var(--graphite);
+    border-radius: 0;
+    color: var(--graphite);
+    background: var(--neon);
+    box-shadow: 4px 4px 0 var(--pink);
+}
+
+.carousel-btn:hover:not(:disabled) { background: var(--pink); }
+
+.carousel-dots button { border-radius: 0; transform: rotate(45deg); }
+
+/* Futuro: tarjetas con sombra dura */
+.future-grid article {
+    padding: 1.4rem 1.5rem 1.6rem;
+    background: var(--white);
+    border: 3px solid var(--graphite);
+    box-shadow: 7px 7px 0 var(--pink);
+    transform: rotate(-1deg);
+}
+
+.future-grid article:nth-child(even) { box-shadow: 7px 7px 0 var(--neon); transform: rotate(1deg); }
+.future-grid h3 { font-size: 1.4rem; }
+
+/* Lanzamiento */
+.launch {
+    background:
+        radial-gradient(rgba(27, 19, 34, 0.2) 2px, transparent 2.6px) 0 0 / 16px 16px,
+        var(--pink);
+    border-top: 0;
+}
+
+.signup input {
+    border: 3px solid var(--graphite);
+    border-radius: 0;
+    box-shadow: 5px 5px 0 var(--graphite);
+}
+
+/* Pie */
+footer { position: relative; padding-top: 3.5rem; }
+
+footer::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    height: 14px;
+    background: var(--hazard);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .ticker-track { animation: none; }
+    .btn:hover, .hero-btn:hover, .nav-links a:hover { transform: none; }
+}
+
+/* =====================================================================
+   CAPA OSCURA: casi toda la web en negro/morado, con rosa y verde neón
+   ===================================================================== */
+:root {
+    --ink: #0b060f;
+    --plum: #2a1235;
+    --wine: #2d0f2c;
+    --night: #08170d;
+    --soft: #ecdff0;
+}
+
+body {
+    color: var(--white);
+    background-color: var(--ink);
+}
+
+.lead, .step p, .features li, .synopsis-text p, .char-desc, .future-grid p { color: var(--soft); }
+h3, .features strong { color: var(--white); }
+
+/* Títulos: bloque blanco sobre fondo oscuro */
+h2 {
+    color: var(--graphite);
+    background: var(--white);
+    box-shadow: 8px 8px 0 var(--pink);
+}
+
+h2::after { background: var(--neon); }
+#juego h2, #futuro h2, #concepto h2 { box-shadow: 8px 8px 0 var(--neon); }
+#juego h2::after, #futuro h2::after, #concepto h2::after { background: var(--pink); }
+
+.launch h2 { color: var(--white); background: var(--graphite); box-shadow: 8px 8px 0 var(--white); }
+.launch h2::after { background: var(--white); }
+
+/* Navegación oscura */
+.nav { background: rgba(11, 6, 15, 0.96); }
+.nav-links a { color: var(--white); }
+.nav-links a:hover { color: var(--graphite); }
+
+/* Botones sobre fondo oscuro */
+.btn { border-color: var(--white); box-shadow: 5px 5px 0 var(--neon); }
+.btn:hover { color: var(--graphite); border-color: var(--white); box-shadow: 8px 8px 0 var(--pink); }
+.btn-ghost { color: var(--white); background: transparent; }
+.btn-ghost:hover { color: var(--graphite); }
+.btn-small { box-shadow: 4px 4px 0 var(--neon); }
+.launch .btn-dark { border-color: var(--graphite); box-shadow: 5px 5px 0 var(--white); }
+.launch .btn-dark:hover { border-color: var(--graphite); box-shadow: 8px 8px 0 var(--white); }
+
+/* ---------- Cabecera ---------- */
+.hero {
+    --w: 500px;
+    background:
+        linear-gradient(108deg, transparent 0 53%, var(--pink) 53% 66%, transparent 66% 67%, var(--white) 67% 68.2%, transparent 68.2% 69.5%, var(--neon) 69.5% 76%, transparent 76% 100%),
+        var(--ink);
+}
+
+.hero::before {
+    background: radial-gradient(var(--pink) 1.7px, transparent 2.2px) 0 0 / 14px 14px;
+    opacity: 0.35;
+}
+
+.hero-visual { --w: min(500px, 84vw); }
+
+.tagline { color: var(--graphite); border-color: var(--pink); }
+
+.hero-text h1 img { filter: drop-shadow(5px 5px 0 var(--pink)) drop-shadow(-2px -2px 0 var(--neon)); }
+
+.disc {
+    box-shadow:
+        0 0 0 10px var(--pink),
+        0 0 0 14px var(--white),
+        0 0 0 19px var(--neon),
+        0 0 46px 18px var(--neon-glow);
+}
+
+.medallion::before {
+    background: repeating-conic-gradient(from 2deg, rgba(255, 255, 255, 0.3) 0 3deg, transparent 3deg 11deg);
+    opacity: 1;
+}
+
+/* Los personajes saltan de la medalla: contorno de pegatina + resplandor */
+.figure img {
+    filter:
+        drop-shadow(0 0 0 var(--graphite))
+        drop-shadow(3px 0 0 var(--graphite)) drop-shadow(-3px 0 0 var(--graphite))
+        drop-shadow(0 3px 0 var(--graphite)) drop-shadow(0 -3px 0 var(--graphite))
+        drop-shadow(3px 0 0 var(--white)) drop-shadow(-3px 0 0 var(--white))
+        drop-shadow(0 3px 0 var(--white)) drop-shadow(0 -3px 0 var(--white))
+        /* para darle un fondo de brillos: drop-shadow(0 0 26px rgba(255, 95, 174, 0.8)); */
+}
+
+.burst {
+    position: absolute;
+    top: -7%;
+    left: -12%;
+    z-index: 3;
+    display: grid;
+    place-items: center;
+    width: 8.5rem;
+    height: 8.5rem;
+    background: var(--neon);
+    clip-path: polygon(50% 0%, 59% 22%, 80% 9%, 77% 33%, 100% 36%, 83% 54%, 98% 74%, 74% 74%, 72% 98%, 54% 82%, 36% 100%, 31% 76%, 6% 82%, 17% 58%, 0% 38%, 24% 34%, 27% 10%, 42% 25%);
+    transform: rotate(-14deg);
+    pointer-events: none;
+}
+
+.burst span {
+    font-family: var(--display);
+    font-size: 1.25rem;
+    line-height: 1.05;
+    text-align: center;
+    text-transform: uppercase;
+    color: var(--graphite);
+    transform: rotate(4deg);
+}
+
+.hero-btn { border-color: var(--white); box-shadow: 4px 4px 0 var(--neon); }
+.hero-name { color: var(--graphite); background: var(--neon); }
+.hero-dots button { border-color: var(--white); }
+
+/* Cintas */
+.ticker-wrap--start { background: linear-gradient(var(--ink) 50%, var(--graphite) 50%); }
+.ticker-wrap--end { background: linear-gradient(var(--ink) 50%, var(--pink) 50%); }
+.ticker { border-color: var(--white); }
+
+/* ---------- Secciones: fondos oscuros y cortes en zigzag ---------- */
+main > section { position: relative; overflow: hidden; padding-block: var(--pad); }
+
+main > section:nth-of-type(-n+6) { padding-bottom: calc(var(--pad) + var(--slant)); margin-bottom: calc(var(--slant) * -1); }
+main > section:nth-of-type(n+2):nth-of-type(-n+7) { padding-top: calc(var(--pad) + var(--slant)); }
+
+main > section:nth-of-type(odd) { clip-path: polygon(0 0, 100% 0, 100% calc(100% - var(--slant)), 0 100%); }
+main > section:nth-of-type(even) { clip-path: polygon(0 0, 100% 0, 100% 100%, 0 calc(100% - var(--slant))); }
+main > section:nth-of-type(7), main > section:nth-of-type(8) { clip-path: none; }
+
+main > section:nth-of-type(1) { z-index: 9; background-color: var(--graphite); }
+main > section:nth-of-type(2) { z-index: 8; background-color: var(--plum); }
+main > section:nth-of-type(3) { z-index: 7; background-color: var(--ink); }
+main > section:nth-of-type(4) { z-index: 6; background-color: var(--graphite); }
+main > section:nth-of-type(5) { z-index: 5; background-color: var(--wine); }
+main > section:nth-of-type(6) { z-index: 4; background-color: var(--night); }
+main > section:nth-of-type(7) { z-index: 3; background-color: var(--plum); }
+
+.synopsis, .base-section, .future, #juego, #personajes {
+    background-image: var(--dots-pink);
+    background-size: 16px 16px;
+    border: 0;
+}
+
+.concept { background-image: radial-gradient(rgba(57, 255, 20, 0.12) 1.5px, transparent 2px); background-size: 18px 18px; }
+
+main > section .wrap { position: relative; z-index: 1; }
+
+/* Estrellas gigantes decorativas */
+main > section:nth-of-type(2)::after,
+main > section:nth-of-type(3)::after,
+main > section:nth-of-type(4)::after,
+main > section:nth-of-type(7)::after {
+    content: "";
+    position: absolute;
+    z-index: 0;
+    width: clamp(12rem, 24vw, 22rem);
+    aspect-ratio: 1;
+    clip-path: var(--star);
+    pointer-events: none;
+}
+
+main > section:nth-of-type(2)::after { right: -4%; bottom: 8%; background: var(--pink); opacity: 0.35; transform: rotate(16deg); }
+main > section:nth-of-type(3)::after { left: -5%; top: 10%; background: var(--neon); opacity: 0.18; transform: rotate(-12deg); }
+main > section:nth-of-type(4)::after { right: -3%; top: 8%; background: var(--neon); opacity: 0.2; transform: rotate(20deg); }
+main > section:nth-of-type(7)::after { right: -4%; top: 12%; background: var(--pink); opacity: 0.3; transform: rotate(-10deg); }
+
+/* Historia / Sinopsis */
+.story-text p { color: var(--soft); }
+
+/* Cómo se juega */
+.step { border-top-color: rgba(255, 255, 255, 0.4); }
+.step-icon { border-color: var(--white); }
+
+/* La base */
+.base-plate { box-shadow: 0 0 0 4px var(--white), 14px 14px 0 4px var(--pink); }
+.features li::before { border-color: var(--white); }
+
+/* ---------- Personajes ---------- */
+.char-name { color: var(--white); }
+.role { color: var(--neon); }
+
+.char-split { grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr); align-items: center; }
+
+.medals { margin-top: 2.75rem; max-width: 520px; }
+
+.medal-char {
+    box-shadow:
+        0 0 0 5px var(--pink),
+        0 0 0 8px var(--white);
+}
+
+button.medal[aria-selected="true"] .medal-char {
+    box-shadow:
+        0 0 0 5px var(--pink),
+        0 0 0 8px var(--white),
+        0 0 0 12px var(--neon),
+        0 0 22px 10px var(--neon-glow);
+}
+
+.medal-label { color: var(--soft); }
+button.medal[aria-selected="true"] .medal-label { color: var(--graphite); background: var(--neon); }
+
+.medal-locked { color: var(--pink); background: transparent; border-color: var(--pink); }
+
+/* Escenario con el personaje en grande */
+.char-stage {
+    position: relative;
+    height: clamp(420px, 50vw, 660px);
+}
+
+.char-art {
+    position: absolute;
+    inset: 0;
+    margin: 0;
+    isolation: isolate;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.35s ease, visibility 0.35s;
+}
+
+.char-art.is-active { opacity: 1; visibility: visible; }
+
+.char-art::before, .char-art::after {
+    content: "";
+    position: absolute;
+    left: 6%;
+    right: 6%;
+    top: 6%;
+    bottom: 0;
+    clip-path: polygon(16% 0, 100% 0, 84% 100%, 0 100%);
+}
+
+.char-art::before { z-index: -1; background: var(--slab); }
+.char-art::after { z-index: -2; background: var(--white); transform: translate(16px, 14px); }
+
+.char-ghost {
+    position: absolute;
+    left: -2%;
+    top: 2%;
+    z-index: -1;
+    font-family: var(--display);
+    font-size: clamp(5rem, 13vw, 11rem);
+    line-height: 0.9;
+    text-transform: uppercase;
+    color: transparent;
+    -webkit-text-stroke: 3px var(--white);
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+    opacity: 0.9;
+}
+
+.char-art img {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    z-index: 1;
+    height: 108%;
+    width: auto;
+    max-width: none;
+    transform: translateX(-50%);
+    filter:
+        drop-shadow(3px 0 0 var(--graphite)) drop-shadow(-3px 0 0 var(--graphite))
+        drop-shadow(0 3px 0 var(--graphite)) drop-shadow(0 -3px 0 var(--graphite))
+        drop-shadow(3px 0 0 var(--white)) drop-shadow(-3px 0 0 var(--white))
+        drop-shadow(0 3px 0 var(--white)) drop-shadow(0 -3px 0 var(--white))
+        drop-shadow(12px 12px 0 rgba(11, 6, 15, 0.6));
+}
+
+/* ---------- Concepto ---------- */
+.concept::before {
+    background: linear-gradient(115deg, transparent 68%, rgba(255, 95, 174, 0.25) 68% 80%, rgba(57, 255, 20, 0.2) 80% 84%, transparent 84%);
+}
+
+/* ---------- Futuro ---------- */
+.future-grid article { color: var(--white); background: var(--graphite); border-color: var(--white); }
+
+/* ---------- Lanzamiento ---------- */
+.launch p { color: var(--graphite); }
+
 /* ---------- Responsive y accesibilidad ---------- */
-@media (max-width: 1040px) {
+@media (max-width: 1140px) {
     .nav-links { display: none; }
 }
 
