@@ -2,9 +2,12 @@
 // tipo: "rushdown" | "zoner" | "grappler" (ver data/tipos.js)
 // Opcionales: intro = frase al empezar la pelea | tamano = escala al dibujarlo (1 = normal)
 export const ENEMIGOS = {
-  generico_01: { id: "generico_01", nombre: "Sombra errante", tipo: "zoner", color: "#7a2e4d", vidaMax: 24, danio: 3 },
+  generico_01: { id: "generico_01", nombre: "Sombra errante", tipo: "zoner", color: "#7a2e4d", vidaMax: 24, danio: 3,
+                 descripcion: "Una presencia difusa que aparece sin previo aviso. Sus ataques mantienen al rival a distancia." },
   lobo_ceniza: { id: "lobo_ceniza", nombre: "Lobo de ceniza", tipo: "grappler", color: "#8a6d3b", vidaMax: 30, danio: 3,
-                 intro: "Un lobo de ceniza te corta el paso" },
+                 intro: "Un lobo de ceniza te corta el paso",
+                 descripcion: "Depredador de las tierras calcinadas. Se abalanza sobre sus objetivos y no les da tregua." },
   coloso_vacio: { id: "coloso_vacio", nombre: "Coloso del vacío", tipo: "grappler", color: "#241a3a", vidaMax: 150, danio: 12, tamano: 1.25,
-                  intro: "El Coloso del vacío te mira... no hay forma de ganar esto" },
+                  intro: "El Coloso del vacío te mira... no hay forma de ganar esto",
+                  descripcion: "Una criatura gigantesca surgida del vacío. Su fuerza descomunal convierte cada golpe en una amenaza." },
 };

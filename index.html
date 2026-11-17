@@ -32,16 +32,15 @@
             <path class="comprimir" d="M3 8h5V3M21 8h-5V3M3 16h5v5M21 16h-5v5"/>
           </svg>
         </button>
+        <!-- Guardar la partida: junto a los controles de sonido y pantalla -->
+        <button id="btn-guardar" class="icono cuadro-guardar" hidden aria-label="Guardar partida" title="Guardar partida">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+        </button>
       </div>
 
       <div id="info-personaje"></div>
 
       <div id="velo"></div>
-
-      <!-- Disquete: guardar la partida (visible en todos los menús salvo el título) -->
-      <button id="btn-guardar" class="cuadro-guardar" hidden aria-label="Guardar partida" title="Guardar partida">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
-      </button>   <!-- fundido a negro entre pantallas -->
 
       <!-- 1) Pantalla de título: "pulsa para empezar" -->
       <section id="pantalla-inicio" class="pantalla" hidden>
@@ -55,7 +54,7 @@
         <h1>Medallion Project</h1>
         <div id="lista-opciones">
           <button id="op-capitulos" class="opcion item" style="--i:0"><span class="titulo">Capítulos</span><span class="sub">Elige tu próxima batalla</span></button>
-          <button id="op-bestiario" class="opcion item proximamente" style="--i:1"><span class="titulo">Bestiario</span><span class="sub">Próximamente</span></button>
+          <button id="op-bestiario" class="opcion item" style="--i:1"><span class="titulo">Bestiario</span><span class="sub">Personajes y enemigos descubiertos</span></button>
           <button id="op-ajustes" class="opcion item" style="--i:2"><span class="titulo">Ajustes</span><span class="sub">Sonido y partida guardada</span></button>
         </div>
       </section>
@@ -68,6 +67,19 @@
           <button id="btn-volver-principal" class="boton item" style="--i:3">Volver</button>
           <button id="btn-intro" class="boton item" style="--i:4">Introducción</button>
         </div>
+      </section>
+
+      <section id="pantalla-bestiario" class="pantalla" hidden>
+        <h1>Bestiario</h1>
+        <div id="bestiario-tiempo"><span>Tiempo jugado</span><strong id="bestiario-tiempo-valor">0 min</strong></div>
+        <div id="bestiario-contenido">
+          <div id="bestiario-pestanas" role="tablist" aria-label="Categorías del bestiario">
+            <button class="pestana-bestiario activa" type="button" role="tab" aria-selected="true" data-categoria="personajes">Personajes</button>
+            <button class="pestana-bestiario" type="button" role="tab" aria-selected="false" data-categoria="enemigos">Enemigos</button>
+          </div>
+          <div id="lista-bestiario" aria-live="polite"></div>
+        </div>
+        <button id="btn-bestiario-volver" class="boton boton-volver-bestiario">Volver</button>
       </section>
 
       <section id="pantalla-ajustes" class="pantalla" hidden>
@@ -86,6 +98,7 @@
 
       <section id="pantalla-combate" class="pantalla" hidden>
         <div id="orden-turnos" aria-label="Orden de turnos"></div>
+        <div id="racha-hud" hidden><span>Enemigos vencidos</span><strong id="racha-actual">0</strong><span class="separador">·</span><span>Récord</span><strong id="racha-record">0</strong></div>
 
         <div id="hud-enemigo" class="hud item desde-der">
           <div id="e-nombre" class="nombre-hud"></div>
@@ -112,6 +125,7 @@
 
         <div id="resultado" hidden>
           <h2 id="resultado-titulo"></h2>
+          <p id="resultado-detalle"></p>
           <div class="fila">
             <button id="btn-reintentar" class="boton">Reintentar</button>
             <button id="btn-salir" class="boton">Volver al menú</button>

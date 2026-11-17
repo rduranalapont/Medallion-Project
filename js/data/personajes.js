@@ -13,8 +13,11 @@ export const PERSONAJES = {
     splash: "img/personajes/mayu.png",
     sprite: "img/personajes/mayu.png",            // PLACEHOLDER: se cambiará por la imagen de combate
     retrato: "img/personajes/mayu_retrato.png",
+    descripcion: "La primera aliada de Medallion Project. Es rápida, decidida y aprovecha cada apertura para encadenar ataques.",
     anclaX: 0.5,
   },
-  agua_01:   { id: "agua_01",   nombre: "Marea", tipo: "zoner",    nivel: 1, color: "#3a9bd9", vida: 28, danio: 5 },
-  planta_01: { id: "planta_01", nombre: "Brote", tipo: "grappler", nivel: 1, color: "#5cb85c", vida: 30, danio: 4 },
+  agua_01:   { id: "agua_01",   nombre: "Marea", tipo: "zoner",    nivel: 1, color: "#3a9bd9", vida: 28, danio: 5,
+               descripcion: "Una combatiente que domina el espacio y controla el ritmo del enfrentamiento desde la distancia." },
+  planta_01: { id: "planta_01", nombre: "Brote", tipo: "grappler", nivel: 1, color: "#5cb85c", vida: 30, danio: 4,
+               descripcion: "Un luchador resistente que prefiere acercarse y convertir cada defensa en una oportunidad para golpear." },
 };

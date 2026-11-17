@@ -8,6 +8,7 @@ import { aplicarVolumenes, sonidoClick, iniciarMusica } from "./audio.js";
 import { mostrarPantalla } from "./pantallas.js";
 import { reproducirEscena } from "./escenas.js";
 import { iniciarCapitulo as empezarCapitulo } from "./combate.js";
+import { iniciarBestiario } from "./bestiario.js";
 
 const $ = (id) => document.getElementById(id);
 let temporizadorAviso;
@@ -39,7 +40,7 @@ function crearPrincipal() {
     sonidoClick();
     if (!datos.introVista) iniciarIntro(); else mostrarPantalla("capitulos");   // la primera vez: cinemática
   });
-  $("op-bestiario").addEventListener("click", () => { sonidoClick(); aviso("Bestiario: próximamente"); });
+  $("op-bestiario").addEventListener("click", () => { sonidoClick(); mostrarPantalla("bestiario"); });
   $("op-ajustes").addEventListener("click", () => { sonidoClick(); mostrarPantalla("ajustes"); });
 }
 
@@ -59,9 +60,10 @@ function mostrarPersonaje() {
 
 function actualizarCapitulos() {                              // apagados sin medalla, con ✓ si ya se completaron
   const p = personajeActual();
-  document.querySelectorAll(".capitulo").forEach((b, i) => {
+  document.querySelectorAll(".capitulo").forEach((b) => {
+    const id = b.dataset.capituloId;
     b.classList.toggle("bloqueado", !p);
-    b.classList.toggle("completado", datos.capitulosCompletados.includes(CAPITULOS[i].id));
+    b.classList.toggle("completado", datos.capitulosCompletados.includes(id === "infinito" ? id : Number(id)));
   });
 }
 
@@ -71,10 +73,12 @@ function iniciarCapitulo(cap) {
 }
 
 function crearCapitulos() {
+  $("lista-capitulos").style.gridTemplateRows = `repeat(${CAPITULOS.length}, minmax(0, 1fr))`;
   CAPITULOS.forEach((cap, i) => {
     const b = document.createElement("button");
-    b.className = "capitulo item"; b.style.setProperty("--i", i);
-    b.innerHTML = `<span class="num">${cap.id}</span><span class="titulo">${cap.subtitulo}</span><span class="sub">${cap.titulo}</span><span class="marca">✓ Completado</span>`;
+    b.className = `capitulo item${cap.modo === "infinito" ? " capitulo-infinito" : ""}`; b.style.setProperty("--i", i);
+    b.dataset.capituloId = cap.id;
+    b.innerHTML = `<span class="num">${cap.numero ?? cap.id}</span><span class="titulo">${cap.subtitulo}</span><span class="sub">${cap.titulo}</span><span class="marca">✓ Completado</span>`;
     b.addEventListener("click", () => { sonidoClick(); iniciarCapitulo(cap); });
     $("lista-capitulos").append(b);
   });
@@ -193,7 +197,7 @@ function crearBarraSuperior() {
 }
 
 export function iniciarMenu() {
-  crearTitulo(); crearPrincipal(); crearCapitulos(); crearAjustes(); crearDisquete(); crearBarraSuperior();
+  crearTitulo(); crearPrincipal(); crearCapitulos(); crearAjustes(); crearDisquete(); crearBarraSuperior(); iniciarBestiario();
   actualizarSilencio(); mostrarPersonaje();
   document.addEventListener("personaje-cambiado", mostrarPersonaje);
   document.addEventListener("pantalla", (e) => { if (e.detail === "capitulos") actualizarCapitulos(); });   // al volver: ✓ en los completados

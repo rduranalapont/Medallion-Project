@@ -2,10 +2,10 @@
 // Para añadir una nueva: crea su <section id="pantalla-xxx" class="pantalla" hidden>, añádela a NOMBRES (y a FONDO_DE si cambia el fondo del canvas).
 import { estado } from "./estado.js";
 
-const NOMBRES = ["inicio", "principal", "capitulos", "ajustes", "combate", "escena"];
-const FONDO_DE = { inicio: "titulo", principal: "titulo", ajustes: "titulo", capitulos: "menu", combate: "combate" };  // qué dibuja el canvas detrás ("escena" no lo cambia)
+const NOMBRES = ["inicio", "principal", "capitulos", "bestiario", "ajustes", "combate", "escena"];
+const FONDO_DE = { inicio: "titulo", principal: "titulo", ajustes: "titulo", capitulos: "menu", bestiario: "menu", combate: "combate" };  // qué dibuja el canvas detrás ("escena" no lo cambia)
 const CON_VELO = new Set(["inicio", "combate", "escena"]);   // en estos cambios la pantalla pasa por un fundido a negro
-const CON_GUARDADO = new Set(["principal", "capitulos", "ajustes"]);   // menús donde se ve el disquete (no en el título)
+const CON_GUARDADO = new Set(["principal", "capitulos", "bestiario", "ajustes"]);   // menús donde se ve el disquete (no en el título)
 const MS_SALIDA = 180;
 const $ = (id) => document.getElementById(id);
 let destino = null, ocupado = false;

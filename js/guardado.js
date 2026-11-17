@@ -6,7 +6,7 @@
 const CLAVE = "medallion_partida", CLAVE_ANTIGUA = "medalion_partida";   // la antigua se migra sola
 
 const DEFECTO = {
-  version: 1,
+  version: 2,
   modificado: 0,                      // marca de tiempo del último guardado (decide qué copia es más reciente)
   introVista: false,                  // true = ya se vio la introducción (cinemática de la primera vez)
   ultimoPersonaje: null,              // última medalla cargada (se recupera al abrir; sin NFC es lo que hay)
@@ -16,6 +16,7 @@ const DEFECTO = {
   capitulosCompletados: [],           // ids de capítulo
   muertes: 0,
   vistos: { personajes: [], enemigos: [] },   // para desbloquear el bestiario
+  modoInfinito: { record: 0 },                 // máximo de enemigos derrotados en una sola racha
 };
 
 const copia = (o) => JSON.parse(JSON.stringify(o));
@@ -29,6 +30,7 @@ function completar(guardado) {
       d[k] = (typeof DEFECTO[k] === "object" && DEFECTO[k] !== null && !Array.isArray(DEFECTO[k]))
         ? { ...DEFECTO[k], ...guardado[k] } : guardado[k];
     }
+    d.version = Math.max(Number(guardado.version) || 0, DEFECTO.version);
   }
   return d;
 }
@@ -74,7 +76,7 @@ function reanudar() {                                              // se ha eleg
 }
 
 // "Firma" del contenido que importa: solo se reescribe el archivo si algo cambió de verdad (no por el reloj ni la marca de tiempo)
-const firmaDe = (d) => JSON.stringify({ ...d, modificado: 0, tiempoJugado: 0 });
+const firmaDe = (d) => JSON.stringify({ ...d, modificado: 0 });
 let ultimaFirma = null;
 
 let archivo = null, permiso = "sin";          // permiso: "sin" (no hay archivo) | "pendiente" (hay que pedir permiso con un clic) | "listo"
@@ -196,35 +198,50 @@ export async function guardarAhora() {
 }
 
 // ---------- Registros de lo que pasa en el juego ----------
+function avisarEstadisticas() { document.dispatchEvent(new Event("estadisticas-cambiadas")); }
+
 export function registrarInvocacion(id) {
   datos.invocaciones.total++;
   datos.invocaciones.porPersonaje[id] = (datos.invocaciones.porPersonaje[id] ?? 0) + 1;
-  datos.ultimoPersonaje = id; guardar();
+  datos.ultimoPersonaje = id;
+  if (!datos.vistos.personajes.includes(id)) datos.vistos.personajes.push(id); // invocar por primera vez descubre al personaje
+  guardar(); avisarEstadisticas();
 }
 export function registrarVisto(tipo, id) {            // tipo: "personajes" | "enemigos"
-  if (!datos.vistos[tipo].includes(id)) { datos.vistos[tipo].push(id); guardar(); }
+  if (!datos.vistos[tipo].includes(id)) { datos.vistos[tipo].push(id); guardar(); avisarEstadisticas(); }
 }
 export function registrarDerrota(idEnemigo) {          // un enemigo derrotado
   datos.enemigosDerrotados.total++;
   datos.enemigosDerrotados.porEnemigo[idEnemigo] = (datos.enemigosDerrotados.porEnemigo[idEnemigo] ?? 0) + 1;
-  guardar();
+  guardar(); avisarEstadisticas();
 }
-export function registrarMuerte() { datos.muertes++; guardar(); }
+export function registrarRecordInfinito(enemigosDerrotados) {
+  datos.modoInfinito ??= { record: 0 };
+  datos.modoInfinito.record = Math.max(datos.modoInfinito.record ?? 0, enemigosDerrotados);
+  guardar(); avisarEstadisticas();
+}
+export function registrarMuerte() { datos.muertes++; guardar(); avisarEstadisticas(); }
 export function completarCapitulo(id) {
   if (!datos.capitulosCompletados.includes(id)) datos.capitulosCompletados.push(id);
-  guardar();
+  guardar(); avisarEstadisticas();
 }
 export function marcarIntroVista() { datos.introVista = true; guardar(); }
 
 // ---------- Tiempo jugado (solo cuenta con la pestaña visible) ----------
 export function iniciarCronometro() {
-  let n = 0;
-  setInterval(() => { if (!document.hidden) datos.tiempoJugado++; if (++n % 10 === 0) guardar(false); }, 1000);   // el reloj solo guarda en el navegador
-  document.addEventListener("visibilitychange", () => { if (document.hidden) guardar(false); });
+  let ticks = 0, segundosVisibles = 0;
+  setInterval(() => {
+    if (!document.hidden) { datos.tiempoJugado++; segundosVisibles++; }
+    if (++ticks % 10 === 0) guardar(false); // actualización frecuente en el navegador
+    if (segundosVisibles >= 60) {          // el .txt se actualiza una vez por minuto, sin escribir cada segundo
+      segundosVisibles = 0; guardar(true);
+    }
+  }, 1000);
+  document.addEventListener("visibilitychange", () => { if (document.hidden) guardar(true); });
   addEventListener("beforeunload", () => { datos.modificado = Date.now(); try { localStorage.setItem(CLAVE, texto()); } catch (e) {} });
 }
 
 export function borrarPartida() {
-  datos = completar(null); guardar();
+  datos = completar(null); guardar(); avisarEstadisticas();
   document.dispatchEvent(new Event("partida-cargada"));
 }

@@ -20,4 +20,5 @@ export const CAPITULOS = [
   { id: 2, titulo: "Capítulo 2", subtitulo: "Rivales y aliados",    enemigo: "coloso_vacio",
     escenaInicio: "cap2_inicio",
     dialogos: [ { escena: "cap2_peligro", cuando: { jugadorVida: 0.5 } } ] },
+  { id: "infinito", numero: "∞", titulo: "Modo infinito", subtitulo: "Sobrevive a oleadas interminables", modo: "infinito" },
 ];
